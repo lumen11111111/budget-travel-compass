@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: "Budget Travel Compass",
-  domain: "example.com",
-  url: "https://example.com",
+  domain: "budgettravelcompass.com",
+  url: "https://budgettravelcompass.com",
   tagline: "Practical Guides for Affordable Independent Travel",
   description:
     "Practical budget travel guides for young independent travelers. Plan affordable trips, find cheaper flights and stays, pack smarter, and travel with confidence.",

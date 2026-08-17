@@ -25,7 +25,7 @@
 		}
 	],
 	"vars": {
-		"NEXT_PUBLIC_SITE_URL": "https://example.com",
-"R2_PUBLIC_BASE_URL": "https://example.com/media"
+		"NEXT_PUBLIC_SITE_URL": "https://budgettravelcompass.com",
+"R2_PUBLIC_BASE_URL": "https://media.budgettravelcompass.com"
 	}
 }

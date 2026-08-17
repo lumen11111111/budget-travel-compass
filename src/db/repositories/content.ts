@@ -1,3 +1,4 @@
+import { cache } from "react";
 import {
   articles as seedArticles,
   siteSettings,
@@ -7,7 +8,14 @@ import {
   type Tag,
 } from "@/db/seed-data";
 import { getCloudflareDb } from "@/db/repositories/cloudflare-env";
-import { listD1Articles, listD1Categories, listD1HomepageBlocks, listD1Tags } from "@/db/repositories/d1-admin-content";
+import {
+  getD1PublishedArticleBySlug,
+  listD1Articles,
+  listD1Categories,
+  listD1HomepageBlocks,
+  listD1PublicArticles,
+  listD1Tags,
+} from "@/db/repositories/d1-admin-content";
 import {
   listLocalDeletedArticleIdsSync,
   listLocalArticleOrdersSync,
@@ -18,6 +26,7 @@ import {
 } from "@/db/repositories/local-admin-content";
 import { decideContentRuntime, type ContentRuntimeDecision } from "@/lib/content-runtime";
 import { publishedArticleWhere } from "@/lib/published";
+import { getReadingTimeMinutes } from "@/lib/reading-time";
 
 export type SitemapContent = {
   articles: Array<{
@@ -41,6 +50,7 @@ export interface ArticleView extends Article {
   category: Category;
   tags: Tag[];
   sortOrder: number;
+  readingTimeMinutes: number;
 }
 
 export interface AdminArticleFilters {
@@ -59,15 +69,35 @@ export interface PaginatedArticles {
   totalPages: number;
 }
 
+interface RuntimeArticle extends Article {
+  readingTimeMinutes: number;
+}
+
 interface ContentSnapshot {
-  articles: Article[];
+  articles: RuntimeArticle[];
   categories: Category[];
   tags: Tag[];
   homepageBlocks: HomepageBlock[];
   runtime: ContentRuntimeDecision;
 }
 
-async function getSnapshot(): Promise<ContentSnapshot> {
+function getLocalSnapshot(runtime: ContentRuntimeDecision): ContentSnapshot {
+  const orderMap = new Map(listLocalArticleOrdersSync().map((order) => [order.articleId, order.sortOrder]));
+  const deletedArticleIds = new Set(listLocalDeletedArticleIdsSync());
+  return {
+    articles: [...listLocalArticlesSync(), ...seedArticles.filter((article) => !deletedArticleIds.has(article.id))].map((article) => ({
+      ...article,
+      sortOrder: orderMap.get(article.id) ?? article.sortOrder ?? article.id,
+      readingTimeMinutes: getReadingTimeMinutes(article.bodyHtml),
+    })),
+    categories: listLocalCategoriesSync(),
+    tags: listLocalTagsSync(),
+    homepageBlocks: listLocalHomepageBlocksSync(),
+    runtime,
+  };
+}
+
+const getAdminSnapshot = cache(async (): Promise<ContentSnapshot> => {
   const db = await getCloudflareDb();
   if (db) {
     const [articles, categories, tags, homepageBlocks] = await Promise.all([
@@ -84,20 +114,28 @@ async function getSnapshot(): Promise<ContentSnapshot> {
     console.error(`CONTENT RUNTIME ${runtime.mode}: ${runtime.reason}`);
     return { articles: [], categories: [], tags: [], homepageBlocks: [], runtime };
   }
+  return getLocalSnapshot(runtime);
+});
 
-  const orderMap = new Map(listLocalArticleOrdersSync().map((order) => [order.articleId, order.sortOrder]));
-  const deletedArticleIds = new Set(listLocalDeletedArticleIdsSync());
-  return {
-    articles: [...listLocalArticlesSync(), ...seedArticles.filter((article) => !deletedArticleIds.has(article.id))].map((article) => ({
-      ...article,
-      sortOrder: orderMap.get(article.id) ?? article.sortOrder ?? article.id,
-    })),
-    categories: listLocalCategoriesSync(),
-    tags: listLocalTagsSync(),
-    homepageBlocks: listLocalHomepageBlocksSync(),
-    runtime,
-  };
-}
+const getPublicSnapshot = cache(async (): Promise<ContentSnapshot> => {
+  const db = await getCloudflareDb();
+  if (db) {
+    const [articles, categories, tags, homepageBlocks] = await Promise.all([
+      listD1PublicArticles(db),
+      listD1Categories(db),
+      listD1Tags(db),
+      listD1HomepageBlocks(db),
+    ]);
+    return { articles, categories, tags, homepageBlocks, runtime: decideContentRuntime(true) };
+  }
+
+  const runtime = decideContentRuntime(false);
+  if (runtime.mode === "production") {
+    console.error(`CONTENT RUNTIME ${runtime.mode}: ${runtime.reason}`);
+    return { articles: [], categories: [], tags: [], homepageBlocks: [], runtime };
+  }
+  return getLocalSnapshot(runtime);
+});
 
 function publishedArticles(snapshot: ContentSnapshot) {
   return snapshot.articles
@@ -125,7 +163,7 @@ function newestPublishedArticles(snapshot: ContentSnapshot) {
     });
 }
 
-function articleCreatedTime(article: Article) {
+function articleCreatedTime(article: RuntimeArticle) {
   return new Date(article.updatedAt || article.publishedAt || 0).getTime() || article.id;
 }
 
@@ -141,7 +179,7 @@ function pinnedPublishedArticles(snapshot: ContentSnapshot) {
     });
 }
 
-function toArticleView(article: Article, snapshot: ContentSnapshot): ArticleView {
+function toArticleView(article: RuntimeArticle, snapshot: ContentSnapshot): ArticleView {
   const categoryMap = new Map(snapshot.categories.map((category) => [category.id, category]));
   const tagMap = new Map(snapshot.tags.map((tag) => [tag.id, tag]));
   const category = categoryMap.get(article.categoryId);
@@ -158,7 +196,7 @@ function toArticleView(article: Article, snapshot: ContentSnapshot): ArticleView
   };
 }
 
-function paginateArticleItems(articles: Article[], snapshot: ContentSnapshot, page: number, pageSize = ARTICLE_PAGE_SIZE): PaginatedArticles {
+function paginateArticleItems(articles: RuntimeArticle[], snapshot: ContentSnapshot, page: number, pageSize = ARTICLE_PAGE_SIZE): PaginatedArticles {
   const totalItems = articles.length;
   const totalPages = Math.max(1, Math.ceil(totalItems / pageSize));
   const currentPage = Math.min(Math.max(1, page), totalPages);
@@ -178,17 +216,17 @@ export function getSiteSettings() {
 }
 
 export async function listCategories() {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return snapshot.categories.filter((category) => category.enabled).sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export async function listAdminCategories() {
-  const snapshot = await getSnapshot();
+  const snapshot = await getAdminSnapshot();
   return snapshot.categories.toSorted((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export async function listTags() {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return snapshot.tags.filter((tag) => tag.enabled).sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
@@ -225,7 +263,7 @@ export async function listSitemapContent(): Promise<SitemapContent> {
     };
   }
 
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return {
     articles: newestPublishedArticles(snapshot).map((article) => ({
       slug: article.slug,
@@ -252,39 +290,39 @@ export async function listSitemapContent(): Promise<SitemapContent> {
 }
 
 export async function listAdminTags() {
-  const snapshot = await getSnapshot();
+  const snapshot = await getAdminSnapshot();
   return snapshot.tags.toSorted((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export async function listHomepageBlocks(): Promise<HomepageBlock[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return snapshot.homepageBlocks.filter((block) => block.enabled).sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export async function listAdminHomepageBlocks(): Promise<HomepageBlock[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getAdminSnapshot();
   return snapshot.homepageBlocks.toSorted((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export async function listPublishedArticles(limit?: number): Promise<ArticleView[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   const items = publishedArticles(snapshot).map((article) => toArticleView(article, snapshot));
   return typeof limit === "number" ? items.slice(0, limit) : items;
 }
 
 export async function listPaginatedPublishedArticles(page: number, pageSize = ARTICLE_PAGE_SIZE): Promise<PaginatedArticles> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return paginateArticleItems(newestPublishedArticles(snapshot), snapshot, page, pageSize);
 }
 
 export async function listLatestPublishedArticles(limit?: number): Promise<ArticleView[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   const items = newestPublishedArticles(snapshot).map((article) => toArticleView(article, snapshot));
   return typeof limit === "number" ? items.slice(0, limit) : items;
 }
 
 export async function getHomepageFeaturedArticle(): Promise<ArticleView | null> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   const [featured] = pinnedPublishedArticles(snapshot);
   const fallback = newestPublishedArticles(snapshot)[0];
   const article = featured ?? fallback;
@@ -292,7 +330,7 @@ export async function getHomepageFeaturedArticle(): Promise<ArticleView | null> 
 }
 
 export async function listLatestPublishedArticlesForHomepage(limit = 6, excludeId?: number): Promise<ArticleView[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return newestPublishedArticles(snapshot)
     .filter((article) => article.id !== excludeId)
     .slice(0, limit)
@@ -300,7 +338,7 @@ export async function listLatestPublishedArticlesForHomepage(limit = 6, excludeI
 }
 
 export async function listHomepageArticlesByCategory(slug: string, limit?: number): Promise<ArticleView[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   const category = snapshot.categories.find((item) => item.slug === slug && item.enabled);
   if (!category) return [];
   const items = newestPublishedArticles(snapshot)
@@ -310,7 +348,7 @@ export async function listHomepageArticlesByCategory(slug: string, limit?: numbe
 }
 
 export async function listAdminArticles(): Promise<ArticleView[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getAdminSnapshot();
   return snapshot.articles
     .map((article) => toArticleView(article, snapshot))
     .sort((a, b) => a.sortOrder - b.sortOrder || new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime());
@@ -344,14 +382,14 @@ export async function listFilteredAdminArticles(filters: AdminArticleFilters): P
 }
 
 export async function getFeaturedArticle(): Promise<ArticleView | null> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   const items = newestPublishedArticles(snapshot);
   const featured = items.find((article) => article.isFeatured) ?? items[0];
   return featured ? toArticleView(featured, snapshot) : null;
 }
 
 export async function listHeatArticles(limit = 5): Promise<ArticleView[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return publishedArticles(snapshot)
     .toSorted((a, b) => b.viewCount - a.viewCount)
     .slice(0, limit)
@@ -359,7 +397,7 @@ export async function listHeatArticles(limit = 5): Promise<ArticleView[]> {
 }
 
 export async function listEditorPicks(limit = 3): Promise<ArticleView[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return publishedArticles(snapshot)
     .filter((article) => article.isPinned || article.isFeatured)
     .slice(0, limit)
@@ -367,7 +405,13 @@ export async function listEditorPicks(limit = 3): Promise<ArticleView[]> {
 }
 
 export async function getArticleBySlug(slug: string): Promise<ArticleView | null> {
-  const snapshot = await getSnapshot();
+  const db = await getCloudflareDb();
+  if (db) {
+    const [article, snapshot] = await Promise.all([getD1PublishedArticleBySlug(db, slug), getPublicSnapshot()]);
+    return article ? toArticleView(article, snapshot) : null;
+  }
+
+  const snapshot = await getAdminSnapshot();
   const article = publishedArticles(snapshot).find((item) => item.slug === slug);
   return article ? toArticleView(article, snapshot) : null;
 }
@@ -386,7 +430,7 @@ export async function listPublishedArticleSlugs(slugs: readonly string[]): Promi
     return new Set(result.results.map((row) => row.slug));
   }
 
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return new Set(
     snapshot.articles
       .filter((article) => uniqueSlugs.includes(article.slug) && publishedArticleWhere(article))
@@ -395,23 +439,23 @@ export async function listPublishedArticleSlugs(slugs: readonly string[]): Promi
 }
 
 export async function getAdminDraftArticleById(id: number): Promise<ArticleView | null> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getAdminSnapshot();
   const article = snapshot.articles.find((item) => item.id === id && item.status === "draft");
   return article ? toArticleView(article, snapshot) : null;
 }
 
 export async function getCategoryBySlug(slug: string): Promise<Category | null> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return snapshot.categories.find((category) => category.slug === slug && category.enabled) ?? null;
 }
 
 export async function getTagBySlug(slug: string): Promise<Tag | null> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return snapshot.tags.find((tag) => tag.slug === slug && tag.enabled) ?? null;
 }
 
 export async function listArticlesByCategory(slug: string): Promise<ArticleView[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   const category = snapshot.categories.find((item) => item.slug === slug && item.enabled);
   if (!category) return [];
   return publishedArticles(snapshot)
@@ -420,7 +464,7 @@ export async function listArticlesByCategory(slug: string): Promise<ArticleView[
 }
 
 export async function listPaginatedArticlesByCategory(slug: string, page: number, pageSize = ARTICLE_PAGE_SIZE): Promise<PaginatedArticles> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   const category = snapshot.categories.find((item) => item.slug === slug && item.enabled);
   if (!category) return paginateArticleItems([], snapshot, page, pageSize);
   return paginateArticleItems(
@@ -432,7 +476,7 @@ export async function listPaginatedArticlesByCategory(slug: string, page: number
 }
 
 export async function listArticlesByTag(slug: string): Promise<ArticleView[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   const tag = snapshot.tags.find((item) => item.slug === slug && item.enabled);
   if (!tag) return [];
   return publishedArticles(snapshot)
@@ -441,7 +485,7 @@ export async function listArticlesByTag(slug: string): Promise<ArticleView[]> {
 }
 
 export async function listPaginatedArticlesByTag(slug: string, page: number, pageSize = ARTICLE_PAGE_SIZE): Promise<PaginatedArticles> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   const tag = snapshot.tags.find((item) => item.slug === slug && item.enabled);
   if (!tag) return paginateArticleItems([], snapshot, page, pageSize);
   return paginateArticleItems(
@@ -456,7 +500,7 @@ export async function searchArticles(query: string): Promise<ArticleView[]> {
   const normalized = query.trim().toLowerCase();
   if (!normalized) return listPublishedArticles();
 
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   return publishedArticles(snapshot)
     .filter((article) => {
       const view = toArticleView(article, snapshot);
@@ -476,7 +520,7 @@ export async function searchArticles(query: string): Promise<ArticleView[]> {
 }
 
 export async function getRelatedArticles(article: ArticleView, limit = 4): Promise<ArticleView[]> {
-  const snapshot = await getSnapshot();
+  const snapshot = await getPublicSnapshot();
   const tagSet = new Set(article.tagIds);
 
   return publishedArticles(snapshot)

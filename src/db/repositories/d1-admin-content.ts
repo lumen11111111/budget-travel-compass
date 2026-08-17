@@ -2,6 +2,8 @@ import "server-only";
 
 import type { Article, Category, HomepageBlock, Tag } from "@/db/seed-data";
 import type { ArticleInput, CategoryInput, HomepageBlockInput, TagInput } from "@/db/repositories/local-admin-content";
+import { PUBLIC_ARTICLE_LIST_SQL, PUBLISHED_ARTICLE_DETAIL_SQL } from "@/db/repositories/d1-public-queries";
+import { getReadingTimeMinutes } from "@/lib/reading-time";
 
 type ArticleRow = {
   id: number;
@@ -21,6 +23,10 @@ type ArticleRow = {
   updated_at: string;
   seo_title: string | null;
   seo_description: string | null;
+};
+
+type PublicArticleRow = Omit<ArticleRow, "body_html" | "created_at"> & {
+  reading_time_minutes: number;
 };
 
 type CategoryRow = {
@@ -110,6 +116,52 @@ function rowToHomepageBlock(row: HomepageBlockRow): HomepageBlock {
   };
 }
 
+function rowToArticle(row: ArticleRow, tagIds: number[]): Article & { readingTimeMinutes: number } {
+  return {
+    id: row.id,
+    title: row.title,
+    slug: row.slug,
+    summary: row.summary,
+    bodyHtml: row.body_html,
+    coverUrl: row.cover_url,
+    categoryId: row.category_id,
+    tagIds,
+    status: row.status,
+    isFeatured: Boolean(row.is_featured),
+    isPinned: Boolean(row.is_pinned),
+    sortOrder: row.sort_order,
+    viewCount: row.view_count,
+    publishedAt: row.published_at ?? "",
+    updatedAt: row.updated_at,
+    seoTitle: row.seo_title ?? undefined,
+    seoDescription: row.seo_description ?? undefined,
+    readingTimeMinutes: getReadingTimeMinutes(row.body_html),
+  };
+}
+
+function rowToPublicArticle(row: PublicArticleRow, tagIds: number[]): Article & { readingTimeMinutes: number } {
+  return {
+    id: row.id,
+    title: row.title,
+    slug: row.slug,
+    summary: row.summary,
+    bodyHtml: "",
+    coverUrl: row.cover_url,
+    categoryId: row.category_id,
+    tagIds,
+    status: row.status,
+    isFeatured: Boolean(row.is_featured),
+    isPinned: Boolean(row.is_pinned),
+    sortOrder: row.sort_order,
+    viewCount: row.view_count,
+    publishedAt: row.published_at ?? "",
+    updatedAt: row.updated_at,
+    seoTitle: row.seo_title ?? undefined,
+    seoDescription: row.seo_description ?? undefined,
+    readingTimeMinutes: Math.max(1, row.reading_time_minutes),
+  };
+}
+
 export async function listD1Categories(db: D1Database) {
   const result = await runD1Query("listD1Categories", () =>
     db.prepare("SELECT * FROM categories ORDER BY sort_order ASC, id ASC").all<CategoryRow>(),
@@ -129,7 +181,7 @@ export async function listD1HomepageBlocks(db: D1Database) {
   return result.results.map(rowToHomepageBlock);
 }
 
-export async function listD1Articles(db: D1Database): Promise<Article[]> {
+export async function listD1Articles(db: D1Database): Promise<Array<Article & { readingTimeMinutes: number }>> {
   const [articleResult, tagResult] = await Promise.all([
     runD1Query("listD1Articles.articles", () =>
       db.prepare("SELECT * FROM articles ORDER BY sort_order ASC, published_at DESC, id ASC").all<ArticleRow>(),
@@ -144,26 +196,41 @@ export async function listD1Articles(db: D1Database): Promise<Article[]> {
     tagMap.set(row.article_id, [...(tagMap.get(row.article_id) ?? []), row.tag_id]);
   }
 
-  return articleResult.results.map((row) => ({
-    id: row.id,
-    title: row.title,
-    slug: row.slug,
-    summary: row.summary,
-    bodyHtml: row.body_html,
-    coverUrl: row.cover_url,
-    categoryId: row.category_id,
-    tagIds: tagMap.get(row.id) ?? [],
-    status: row.status,
-    isFeatured: Boolean(row.is_featured),
-    isPinned: Boolean(row.is_pinned),
-    sortOrder: row.sort_order,
-    viewCount: row.view_count,
-    publishedAt: row.published_at ?? "",
-    createdAt: row.created_at,
-    updatedAt: row.updated_at,
-    seoTitle: row.seo_title ?? undefined,
-    seoDescription: row.seo_description ?? undefined,
-  }));
+  return articleResult.results.map((row) => rowToArticle(row, tagMap.get(row.id) ?? []));
+}
+
+export async function listD1PublicArticles(db: D1Database): Promise<Array<Article & { readingTimeMinutes: number }>> {
+  const [articleResult, tagResult] = await Promise.all([
+    runD1Query("listD1PublicArticles.articles", () => db.prepare(PUBLIC_ARTICLE_LIST_SQL).all<PublicArticleRow>()),
+    runD1Query("listD1PublicArticles.articleTags", () =>
+      db.prepare("SELECT article_id, tag_id FROM article_tags").all<{ article_id: number; tag_id: number }>(),
+    ),
+  ]);
+  const tagMap = new Map<number, number[]>();
+
+  for (const row of tagResult.results) {
+    tagMap.set(row.article_id, [...(tagMap.get(row.article_id) ?? []), row.tag_id]);
+  }
+
+  return articleResult.results.map((row) => rowToPublicArticle(row, tagMap.get(row.id) ?? []));
+}
+
+export async function getD1PublishedArticleBySlug(
+  db: D1Database,
+  slug: string,
+): Promise<(Article & { readingTimeMinutes: number }) | null> {
+  const row = await runD1Query("getD1PublishedArticleBySlug.article", () =>
+    db.prepare(PUBLISHED_ARTICLE_DETAIL_SQL).bind(slug).first<ArticleRow>(),
+  );
+  if (!row) return null;
+
+  const tagResult = await runD1Query("getD1PublishedArticleBySlug.articleTags", () =>
+    db.prepare("SELECT tag_id FROM article_tags WHERE article_id = ?").bind(row.id).all<{ tag_id: number }>(),
+  );
+  return rowToArticle(
+    row,
+    tagResult.results.map((item) => item.tag_id),
+  );
 }
 
 export async function createD1Article(db: D1Database, input: ArticleInput) {

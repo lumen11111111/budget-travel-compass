@@ -120,16 +120,11 @@ export function buildHomepageStories(published: ArticleView[]): HomepageStory[] 
       excerpt: article.summary,
       category: article.category.name,
       categorySlug: article.category.slug,
-      readTime: readingTime(article.bodyHtml),
+      readTime: `${article.readingTimeMinutes} min read`,
       image: article.coverUrl || preview.image,
       alt: article.title,
       href: `/news/${article.slug}`,
       source: "published",
     };
   });
-}
-
-function readingTime(bodyHtml: string) {
-  const wordCount = bodyHtml.replace(/<[^>]+>/g, " ").trim().split(/\s+/).filter(Boolean).length;
-  return `${Math.max(1, Math.ceil(wordCount / 220))} min read`;
 }

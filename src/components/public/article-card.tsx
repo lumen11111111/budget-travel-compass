@@ -3,7 +3,6 @@ import Link from "next/link";
 import { siteConfig } from "@/config/site.config";
 import type { ArticleView } from "@/db/repositories/content";
 import { formatDate, formatViews } from "@/lib/format";
-import { formatReadingTime } from "@/lib/reading-time";
 
 type ArticleCardTitleLevel = "h2" | "h3";
 
@@ -36,7 +35,7 @@ export function ArticleCard({
         <div className="meta">
           <span>{defaultAuthor}</span>
           <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
-          <span>{formatReadingTime(article.bodyHtml)}</span>
+          <span>{article.readingTimeMinutes} min read</span>
           <span>{formatViews(article.viewCount)}</span>
         </div>
         <p>{article.summary}</p>

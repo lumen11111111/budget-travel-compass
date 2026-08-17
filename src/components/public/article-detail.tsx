@@ -3,10 +3,11 @@ import Link from "next/link";
 import { ArticleList } from "@/components/public/article-list";
 import { SiteFooter } from "@/components/public/site-footer";
 import { SearchPanel, SiteHeader } from "@/components/public/site-header";
-import type { ArticleView } from "@/db/repositories/content";
+import { listPublishedArticleSlugs, type ArticleView } from "@/db/repositories/content";
 import { formatDate, formatViews } from "@/lib/format";
 import { formatReadingTime } from "@/lib/reading-time";
 import { listArticleHeadings, normalizeArticleBodyHtml } from "@/lib/article-body";
+import { renderPublicationAwareArticleHtml } from "@/lib/publication-aware-links";
 import { buildArticleJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
 
 interface ArticleDetailProps {
@@ -14,12 +15,22 @@ interface ArticleDetailProps {
   defaultAuthor: string;
   related: ArticleView[];
   structuredData?: boolean;
+  publicationAwareInternalLinks?: boolean;
 }
 
-export async function ArticleDetail({ article, defaultAuthor, related, structuredData = true }: ArticleDetailProps) {
+export async function ArticleDetail({
+  article,
+  defaultAuthor,
+  related,
+  structuredData = true,
+  publicationAwareInternalLinks = false,
+}: ArticleDetailProps) {
   const coverTone = article.tags[0]?.slug ?? article.category.slug;
   const readingTime = formatReadingTime(article.bodyHtml);
-  const articleBodyHtml = normalizeArticleBodyHtml(article.bodyHtml);
+  const normalizedArticleBodyHtml = normalizeArticleBodyHtml(article.bodyHtml);
+  const articleBodyHtml = publicationAwareInternalLinks
+    ? await renderPublicationAwareArticleHtml(normalizedArticleBodyHtml, listPublishedArticleSlugs)
+    : normalizedArticleBodyHtml;
   const articleHeadings = listArticleHeadings(articleBodyHtml);
   const articleJsonLd = structuredData ? await buildArticleJsonLd(article) : null;
   const breadcrumbJsonLd = structuredData ? buildBreadcrumbJsonLd(article) : null;

@@ -372,6 +372,28 @@ export async function getArticleBySlug(slug: string): Promise<ArticleView | null
   return article ? toArticleView(article, snapshot) : null;
 }
 
+export async function listPublishedArticleSlugs(slugs: readonly string[]): Promise<ReadonlySet<string>> {
+  const uniqueSlugs = [...new Set(slugs.filter((slug) => /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug)))];
+  if (uniqueSlugs.length === 0) return new Set();
+
+  const db = await getCloudflareDb();
+  if (db) {
+    const placeholders = uniqueSlugs.map(() => "?").join(", ");
+    const result = await db
+      .prepare(`SELECT slug FROM articles WHERE slug IN (${placeholders}) AND lower(status) = 'published'`)
+      .bind(...uniqueSlugs)
+      .all<{ slug: string }>();
+    return new Set(result.results.map((row) => row.slug));
+  }
+
+  const snapshot = await getSnapshot();
+  return new Set(
+    snapshot.articles
+      .filter((article) => uniqueSlugs.includes(article.slug) && publishedArticleWhere(article))
+      .map((article) => article.slug),
+  );
+}
+
 export async function getAdminDraftArticleById(id: number): Promise<ArticleView | null> {
   const snapshot = await getSnapshot();
   const article = snapshot.articles.find((item) => item.id === id && item.status === "draft");

@@ -12,7 +12,7 @@ AI may help turn constraints into questions, group notes, compare user-supplied 
 
 ## Current first-party research
 
-Google's Gemini Apps Help explicitly warns that responses can be inaccurate and should be double-checked. Its Privacy Hub, updated 29 June 2026, describes Keep Activity controls, default and selectable auto-delete periods, temporary/off-state retention, human review, connected-app effects, and longer retention for reviewed data. The draft uses this as one concrete example and instructs readers to inspect the chosen tool's own current terms.
+Google's Gemini Apps Help explicitly warns that responses can be inaccurate and should be double-checked. Its Privacy Hub, updated 15 July 2026 and rechecked on 17 August 2026, describes Keep Activity controls, default and selectable auto-delete periods, temporary/off-state retention, human review, connected-app effects, and longer retention for reviewed data. The draft uses this as one concrete example and instructs readers to inspect the chosen tool's own current terms.
 
 ## Sources
 

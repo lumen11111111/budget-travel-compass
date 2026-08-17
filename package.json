@@ -57,6 +57,7 @@
     "test:importer": "tsx scripts/test-p0.ts",
     "test:content-contracts": "tsx scripts/test-p0.ts",
     "test:sitemap": "tsx scripts/test-sitemap-runtime.ts",
+    "test:publication-aware-links": "tsx scripts/test-publication-aware-links.ts",
     "theme:css-audit": "tsx scripts/theme-css-audit.ts",
     "test": "npm run test:framework-version && npm run test:theme-discovery && npm run test:p0 && npm run test:acceptance && npm run test:production-bootstrap && npm run test:cloudflare-execution && npm run test:cloudflare-integration-runner && npm run test:wrangler-read-parsers && npm run test:wrangler-command-runner && npm run test:wrangler-create-parsers && npm run test:wrangler-deploy-parsers && npm run test:wrangler-secret-parsers && npm run test:wrangler-d1-execute-parsers && npm run test:production-config-patch && npm run test:production-config-recovery && npm run test:production-deploy-workflow && npm run test:production-d1-bootstrap && npm run test:production-resume && npm run test:production-secret-redaction && npm run test:production-write-result-handling && npm run test:production-resource-authorization && npm run test:production-full-write-preflight && npm run test:production-execute-convergence && npm run test:sitemap",
     "seo:sitemap-check": "tsx tools/seo/check-sitemap.ts",
@@ -65,18 +66,20 @@
     "test:production-resource-authorization": "tsx scripts/test-production-resource-authorization.ts"
   },
   "dependencies": {
+    "@contentforge/theme-botanical-editorial": "file:./frontend-library/botanical-editorial",
     "@opennextjs/cloudflare": "latest",
     "@tiptap/extension-link": "latest",
     "@tiptap/extension-placeholder": "latest",
     "@tiptap/react": "latest",
     "@tiptap/starter-kit": "latest",
+    "dom-serializer": "^3.1.1",
     "drizzle-orm": "latest",
+    "htmlparser2": "^12.0.0",
     "lucide-react": "latest",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "zod": "latest",
-    "@contentforge/theme-botanical-editorial": "file:./frontend-library/botanical-editorial"
+    "zod": "latest"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "latest",

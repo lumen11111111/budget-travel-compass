@@ -175,6 +175,7 @@ async function isSlugUsed(slug: string, currentId?: number) {
 function revalidateContent() {
   revalidatePath("/");
   revalidatePath("/news");
+  revalidatePath("/news/[slug]", "page");
   revalidatePath("/admin");
   revalidatePath("/admin/articles");
 }

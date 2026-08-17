@@ -43,5 +43,5 @@ export default async function ArticleDetailPage({ params }: PageProps) {
   }
 
   const [related, identity] = await Promise.all([getRelatedArticles(article, 3), getSiteIdentitySettings()]);
-  return <ArticleDetail article={article} defaultAuthor={identity.defaultAuthor} related={related} />;
+  return <ArticleDetail article={article} defaultAuthor={identity.defaultAuthor} related={related} publicationAwareInternalLinks />;
 }

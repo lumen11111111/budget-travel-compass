@@ -54,8 +54,8 @@ Rule: every item below is a pre-publication recheck. Research completion and Imp
 
 | Freshness | Articles |
 |---|---:|
-| HIGH | 19 |
-| MEDIUM | 16 |
+| HIGH | 21 |
+| MEDIUM | 14 |
 | LOW | 9 |
 | **Total** | **44** |
 

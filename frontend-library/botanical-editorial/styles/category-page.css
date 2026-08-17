@@ -1,0 +1,214 @@
+﻿.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 20px;
+}
+
+.category-hero {
+  padding-top: clamp(28px, 5vw, 72px);
+}
+
+.category-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(320px, 0.65fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+}
+
+.category-hero-copy {
+  display: grid;
+  gap: 14px;
+}
+
+.category-hero-copy .eyebrow {
+  color: var(--botanical-blue-dark);
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.category-hero-copy h1,
+.category-results h1 {
+  margin: 0;
+  color: var(--botanical-ink);
+  font-family: var(--botanical-font-display);
+  font-size: clamp(3.4rem, 8vw, 8rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.86;
+  letter-spacing: -0.05em;
+}
+
+.category-hero-copy p {
+  max-width: 48ch;
+  color: var(--botanical-ink-soft);
+  line-height: 1.7;
+}
+
+.category-hero-media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  background: #dce5ef;
+  border-radius: var(--botanical-radius-xl);
+  box-shadow: var(--botanical-shadow);
+}
+
+.category-hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.category-results {
+  min-width: 0;
+}
+
+.category-results .article-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(32px, 4vw, 54px);
+}
+
+.category-results .editorial-article-card {
+  grid-template-columns: 1fr;
+  gap: clamp(18px, 2vw, 26px);
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.category-results .editorial-article-image {
+  aspect-ratio: 4 / 5;
+  border-radius: clamp(22px, 2.4vw, 34px);
+}
+
+.category-results .editorial-article-copy h2,
+.category-results .editorial-article-copy h3 {
+  overflow: hidden;
+  font-size: clamp(0.9rem, 1.04vw, 1.24rem);
+  line-height: 1.08;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.category-results .article-byline,
+.category-results .editorial-article-copy p {
+  display: none;
+}
+
+.search-panel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: var(--botanical-container);
+  margin: 0 auto 22px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid var(--botanical-line);
+  border-radius: 999px;
+  box-shadow: 0 14px 34px rgba(20, 118, 255, 0.08);
+}
+
+.search-panel input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px 8px;
+  border: 0;
+  outline: 0;
+}
+
+.search-panel .button {
+  min-height: 38px;
+}
+
+.sidebar {
+  display: grid;
+  gap: 14px;
+  align-self: start;
+}
+
+.panel,
+.newspaper-panel {
+  background: var(--botanical-card-gradient);
+  border: 1px solid rgba(215, 224, 238, 0.92);
+  border-radius: var(--botanical-radius);
+  box-shadow: var(--botanical-shadow);
+}
+
+.newspaper-panel {
+  position: relative;
+  overflow: hidden;
+  padding: 14px;
+}
+
+.section-title {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 28px 0 14px;
+}
+
+.section-heading-label {
+  margin: 0;
+  color: var(--botanical-blue-dark);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag-row .tag {
+  display: inline-flex;
+  padding: 7px 10px;
+  color: #fff;
+  font-size: 0.76rem;
+  font-weight: 900;
+  background: var(--botanical-glow);
+  border-radius: 999px;
+}
+
+.heat-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+}
+
+.heat-list li {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  gap: 10px;
+  padding: 11px;
+  list-style: none;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(215, 224, 238, 0.86);
+  border-radius: var(--botanical-radius-sm);
+}
+
+.rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 900;
+  background: var(--botanical-glow);
+  border-radius: 999px;
+}
+
+

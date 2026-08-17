@@ -1,0 +1,37 @@
+﻿:root {
+  --botanical-font-sans: Inter, "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", Arial, sans-serif;
+  --botanical-font-display: var(--botanical-instrument-serif), "Bodoni 72", "Didot", "Iowan Old Style", Georgia, serif;
+  --botanical-ink: #0d2747;
+  --botanical-ink-deep: #071729;
+  --botanical-ink-soft: #5d718a;
+  --botanical-muted: #7a8aa0;
+  --botanical-paper: #eef6ff;
+  --botanical-paper-bright: #f8fbff;
+  --botanical-surface: #ffffff;
+  --botanical-surface-soft: rgba(255, 255, 255, 0.82);
+  --botanical-line: rgba(13, 39, 71, 0.1);
+  --botanical-line-strong: rgba(13, 39, 71, 0.18);
+  --botanical-navy: #03101f;
+  --botanical-navy-soft: #0b213d;
+  --botanical-blue: #1476ff;
+  --botanical-blue-dark: #0d4ed8;
+  --botanical-ice: #14d7e5;
+  --botanical-violet: #7257ff;
+  --botanical-mint: #8ff5e6;
+  --botanical-glow: linear-gradient(135deg, #1476ff 0%, #14d7e5 48%, #7257ff 100%);
+  --botanical-hero-gradient: linear-gradient(135deg, rgba(3, 16, 31, 0.14), rgba(20, 118, 255, 0.18), rgba(20, 215, 229, 0.12));
+  --botanical-card-gradient: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(240, 248, 255, 0.9));
+  --botanical-shadow: 0 18px 42px rgba(12, 35, 82, 0.09);
+  --botanical-shadow-hover: 0 24px 58px rgba(20, 118, 255, 0.18);
+  --botanical-radius-sm: 14px;
+  --botanical-radius: 18px;
+  --botanical-radius-lg: 28px;
+  --botanical-radius-xl: 36px;
+  --botanical-container: 1244px;
+  --botanical-container-padding: 20px;
+  --botanical-section-gap: clamp(38px, 6vw, 78px);
+  --botanical-grid-gap: clamp(18px, 2.4vw, 34px);
+  --botanical-focus-ring: 0 0 0 3px rgba(20, 215, 229, 0.34);
+}
+
+

@@ -1,0 +1,11 @@
+{
+  "command": "d1 list --json",
+  "wranglerVersion": "4.105.0",
+  "exitCode": 0,
+  "stdout": "{\"result\":[{\"name\":\"missing-id\"}]}",
+  "stderr": "",
+  "expected": {
+    "ok": false,
+    "code": "WRANGLER_D1_LIST_MISSING_FIELDS"
+  }
+}

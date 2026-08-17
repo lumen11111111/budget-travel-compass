@@ -1,0 +1,6 @@
+{
+  "command": "d1 create",
+  "exitCode": 1,
+  "stdout": "",
+  "stderr": "Error: permission denied"
+}

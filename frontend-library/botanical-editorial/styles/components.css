@@ -1,0 +1,213 @@
+﻿.home-category-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: clamp(14px, 2vw, 24px);
+}
+
+.home-category-card {
+  position: relative;
+  grid-column: span 3;
+  display: block;
+  min-height: clamp(260px, 31vw, 430px);
+  overflow: hidden;
+  color: var(--botanical-ink);
+  background: #dce5ef;
+  border-radius: clamp(22px, 2.4vw, 34px);
+  box-shadow: var(--botanical-shadow);
+}
+
+.home-category-card:nth-child(n + 5),
+.home-category-card-landscape {
+  grid-column: span 4;
+  min-height: clamp(230px, 24vw, 330px);
+}
+
+.home-category-media {
+  position: absolute;
+  inset: 0;
+}
+
+.home-category-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 360ms ease, filter 220ms ease;
+}
+
+.home-category-card::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  content: "";
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.06) 42%, rgba(13, 39, 71, 0.12));
+}
+
+.home-category-copy {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: clamp(18px, 2.4vw, 30px);
+}
+
+.home-category-copy strong {
+  max-width: 8ch;
+  color: var(--botanical-ink);
+  font-family: var(--botanical-font-display);
+  font-size: clamp(2rem, 4.4vw, 4.9rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
+
+.home-category-copy em {
+  max-width: 26ch;
+  margin-top: auto;
+  color: var(--botanical-ink-soft);
+  font-style: normal;
+  line-height: 1.55;
+}
+
+.home-category-card:hover .home-category-media img,
+.home-category-card:focus-visible .home-category-media img {
+  filter: saturate(1.08) contrast(1.02);
+  transform: scale(1.045);
+}
+
+.featured-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+  gap: clamp(22px, 4vw, 56px);
+  align-items: stretch;
+}
+
+.featured-secondary-stack {
+  display: grid;
+  gap: 18px;
+}
+
+.editorial-article-card {
+  display: grid;
+  gap: 18px;
+  color: var(--botanical-ink);
+}
+
+.editorial-article-image {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  background: #dce5ef;
+  border-radius: var(--botanical-radius);
+}
+
+.editorial-article-card-feature .editorial-article-image {
+  aspect-ratio: 16 / 10;
+  border-radius: var(--botanical-radius-xl);
+}
+
+.editorial-article-image img,
+.editorial-article-image > span {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 360ms ease, filter 220ms ease;
+}
+
+.editorial-article-card:hover .editorial-article-image img,
+.editorial-article-card:focus-within .editorial-article-image img {
+  filter: saturate(1.08);
+  transform: scale(1.045);
+}
+
+.editorial-article-copy {
+  display: grid;
+  gap: 10px;
+}
+
+.article-kicker,
+.article-byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--botanical-ink-soft);
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.editorial-article-copy h2,
+.editorial-article-copy h3 {
+  margin: 0;
+  color: var(--botanical-ink);
+  font-family: var(--botanical-font-display);
+  font-size: clamp(1.35rem, 2.4vw, 2.6rem);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+.editorial-article-copy p {
+  margin: 0;
+  color: var(--botanical-ink-soft);
+  line-height: 1.65;
+}
+
+.latest-articles-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(24px, 4vw, 54px);
+}
+
+.latest-articles-section .editorial-article-image {
+  aspect-ratio: 4 / 5;
+  border-radius: clamp(22px, 2.4vw, 34px);
+}
+
+.pagination-summary {
+  margin: -8px 0 16px;
+  color: var(--botanical-muted);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: 22px;
+}
+
+.pagination a,
+.pagination-current,
+.pagination-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  min-height: 38px;
+  padding: 9px 13px;
+  font-size: 0.86rem;
+  font-weight: 900;
+  border-radius: 999px;
+}
+
+.pagination a {
+  color: var(--botanical-blue-dark);
+  background: #fff;
+  border: 1px solid rgba(20, 118, 255, 0.18);
+}
+
+.pagination-current {
+  color: #fff;
+  background: var(--botanical-glow);
+}
+
+

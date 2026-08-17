@@ -1,0 +1,1 @@
+export { homepageConfig } from "@/instance/homepage.config";

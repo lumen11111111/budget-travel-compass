@@ -1,0 +1,6 @@
+{
+  "command": "d1 create",
+  "exitCode": 0,
+  "stdout": "{\"result\":{\"id\":\"11111111-1111-4111-8111-111111111111\",\"name\":\"contentforge-it-fixture\"}}",
+  "stderr": ""
+}

@@ -1,0 +1,60 @@
+{
+  "siteName": "ContentForge Demo",
+  "domain": "example.com",
+  "productionUrl": "https://example.com",
+  "tagline": "Reusable Content Website Starter",
+  "description": "ContentForge Demo shows the default structure for an editorial content website.",
+  "contactEmail": "hello@example.com",
+  "supportEmail": "support@example.com",
+  "legalEmail": "legal@example.com",
+  "teamName": "ContentForge Demo Team",
+  "editorialTeamName": "ContentForge Editorial Team",
+  "operatorName": "ContentForge Demo Operator",
+  "operatorCountry": "United States",
+  "legalStatus": "Independent Publisher",
+  "packageName": "contentforge-demo",
+  "githubRepo": "https://github.com/YOUR_ACCOUNT/YOUR_REPO.git",
+  "cloudflareWorkerName": "contentforge-demo",
+  "d1DatabaseName": "contentforge-demo",
+  "d1DatabaseId": "00000000-0000-0000-0000-000000000000",
+  "r2BucketName": "contentforge-demo-media",
+  "themeName": "homerio",
+  "brandColors": {
+    "ink": "#111827",
+    "paper": "#f8fafc",
+    "surface": "#ffffff",
+    "accent": "#2563eb",
+    "accentDark": "#1d4ed8",
+    "line": "#e5e7eb"
+  },
+  "navigation": [
+    { "label": "Home", "href": "/" },
+    { "label": "Guides", "href": "/category/guides" },
+    { "label": "Featured Picks", "href": "/category/featured-picks" },
+    { "label": "Resource Library", "href": "/category/resources" },
+    { "label": "Latest Articles", "href": "/news" },
+    { "label": "About Us", "href": "/about" },
+    { "label": "Contact Us", "href": "/contact" }
+  ],
+  "categories": [
+    { "name": "Guides", "slug": "guides" },
+    { "name": "Featured Picks", "slug": "featured-picks" },
+    { "name": "Resource Library", "slug": "resources" },
+    { "name": "Latest Articles", "slug": "latest-articles" }
+  ],
+  "tags": [
+    { "name": "Planning", "slug": "planning" },
+    { "name": "How To", "slug": "how-to" },
+    { "name": "Tools", "slug": "tools" },
+    { "name": "Strategy", "slug": "strategy" }
+  ],
+  "homepageModules": [
+    { "key": "lead", "label": "Lead Story", "enabled": true },
+    { "key": "latest", "label": "Latest Articles", "enabled": true },
+    { "key": "genreGuides", "label": "Guides", "enabled": true }
+  ],
+  "defaultAuthor": "ContentForge editorial desk",
+  "rssEnabled": true,
+  "adsEnabled": false,
+  "adsensePublisherId": ""
+}

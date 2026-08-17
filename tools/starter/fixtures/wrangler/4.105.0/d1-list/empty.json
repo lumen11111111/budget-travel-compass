@@ -1,0 +1,11 @@
+{
+  "command": "d1 list --json",
+  "wranglerVersion": "4.105.0",
+  "exitCode": 0,
+  "stdout": "[]",
+  "stderr": "",
+  "expected": {
+    "ok": true,
+    "count": 0
+  }
+}

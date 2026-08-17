@@ -1,0 +1,11 @@
+{
+  "command": "worker list capability",
+  "wranglerVersion": "4.105.0",
+  "exitCode": 0,
+  "stdout": "Wrangler 4.105.0 has no stable account-wide Worker list output for this adapter.",
+  "stderr": "",
+  "expected": {
+    "ok": false,
+    "code": "WRANGLER_WORKER_LIST_UNSUPPORTED"
+  }
+}

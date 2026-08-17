@@ -1,0 +1,93 @@
+{
+  "name": "botanical-editorial",
+  "package": "@contentforge/theme-botanical-editorial",
+  "type": "frontend-theme",
+  "version": "botanical-editorial-theme-v1",
+  "description": "Complete premium botanical editorial website theme for education, lifestyle, ingredient, wellness, and reference content sites.",
+  "capabilities": [
+    "botanical-editorial",
+    "full-site-layouts",
+    "homepage-layouts",
+    "article-layouts",
+    "category-layouts",
+    "search-layouts",
+    "static-page-layouts",
+    "contact-layouts",
+    "legal-layouts",
+    "not-found-layouts",
+    "header-shell",
+    "footer-accordion",
+    "newsletter",
+    "empty-states",
+    "responsive-layouts",
+    "theme-preview"
+  ],
+  "components": {
+    "registry": {
+      "articleCard": { "file": "components/EditorialArticleCard.tsx", "export": "EditorialArticleCard", "type": "server-component" },
+      "categoryCard": { "file": "components/HomeCategoryCard.tsx", "export": "HomeCategoryCard", "type": "server-component" },
+      "featuredGrid": { "file": "components/FeaturedGrid.tsx", "export": "FeaturedGrid", "type": "server-component" },
+      "categoryGrid": { "file": "components/HomeCategoryGrid.tsx", "export": "HomeCategoryGrid", "type": "server-component" },
+      "latestArticlesGrid": { "file": "components/LatestArticlesGrid.tsx", "export": "LatestArticlesGrid", "type": "server-component" },
+      "homeSectionHeading": { "file": "components/HomeSectionHeading.tsx", "export": "HomeSectionHeading", "type": "server-component" },
+      "articleList": { "file": "components/ArticleList.tsx", "export": "ArticleList", "type": "server-component" },
+      "pagination": { "file": "components/Pagination.tsx", "export": "Pagination", "type": "server-component" },
+      "footerAccordionSection": {
+        "file": "components/FooterAccordionSection.tsx",
+        "export": "FooterAccordionSection",
+        "type": "client-component"
+      }
+    }
+  },
+  "sections": {
+    "registry": {
+      "hero": { "file": "sections/HomeHero.tsx", "export": "HomeHero" },
+      "categoryShowcase": { "file": "sections/CategoryShowcaseSection.tsx", "export": "CategoryShowcaseSection" },
+      "featuredArticles": { "file": "sections/FeaturedArticlesSection.tsx", "export": "FeaturedArticlesSection" },
+      "latestArticles": { "file": "sections/LatestArticlesSection.tsx", "export": "LatestArticlesSection" },
+      "newsletter": { "file": "sections/NewsletterBlock.tsx", "export": "NewsletterBlock" },
+      "categoryHero": { "file": "sections/CategoryHero.tsx", "export": "CategoryHero" },
+      "articleHero": { "file": "sections/ArticleHero.tsx", "export": "ArticleHero" },
+      "relatedArticles": { "file": "sections/RelatedArticlesSection.tsx", "export": "RelatedArticlesSection" }
+    }
+  },
+  "layouts": {
+    "registry": {
+      "homepage": { "file": "layouts/HomepageLayout.tsx", "export": "HomepageLayout" },
+      "globalPageShell": { "file": "layouts/GlobalPageShell.tsx", "export": "GlobalPageShell" },
+      "archive": { "file": "layouts/ArchivePageLayout.tsx", "export": "ArchivePageLayout" },
+      "category": { "file": "layouts/CategoryPageLayout.tsx", "export": "CategoryPageLayout" },
+      "article": { "file": "layouts/ArticlePageLayout.tsx", "export": "ArticlePageLayout" },
+      "search": { "file": "layouts/SearchPageLayout.tsx", "export": "SearchPageLayout" },
+      "static": { "file": "layouts/StaticPageLayout.tsx", "export": "StaticPageLayout" }
+    }
+  },
+  "shell": {
+    "registry": {
+      "header": { "file": "shell/HeaderShell.tsx", "export": "HeaderShell" },
+      "footer": { "file": "shell/FooterShell.tsx", "export": "FooterShell" },
+      "searchPanel": { "file": "shell/SearchPanelShell.tsx", "export": "SearchPanelShell" },
+      "sidebar": { "file": "shell/SidebarShell.tsx", "export": "SidebarShell" }
+    }
+  },
+  "assets": {
+    "registry": {
+      "editorialFonts": { "directory": "assets/fonts/editorial-serif", "type": "font-directory" }
+    }
+  },
+  "preview": {
+    "page": "preview/page.tsx",
+    "data": "preview/preview-data.ts"
+  },
+  "tokens": {
+    "colors": true,
+    "typography": true,
+    "spacing": true,
+    "effects": true
+  },
+  "styles": {
+    "tokens": true,
+    "components": true,
+    "entry": "styles/index.css"
+  }
+}

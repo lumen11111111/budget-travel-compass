@@ -1,0 +1,121 @@
+{
+  "siteName": "Budget Travel Compass",
+  "domain": "example.com",
+  "productionUrl": "https://example.com",
+  "tagline": "Practical Guides for Affordable Independent Travel",
+  "description": "Practical budget travel guides for young independent travelers. Plan affordable trips, find cheaper flights and stays, pack smarter, and travel with confidence.",
+  "contactEmail": "hello@example.com",
+  "supportEmail": "support@example.com",
+  "legalEmail": "legal@example.com",
+  "teamName": "Budget Travel Compass",
+  "editorialTeamName": "Budget Travel Compass Editorial",
+  "operatorName": "Budget Travel Compass",
+  "operatorCountry": "",
+  "legalStatus": "Independent Editorial Website",
+  "packageName": "budget-travel-compass",
+  "githubRepo": "https://github.com/YOUR_ACCOUNT/YOUR_REPO.git",
+  "cloudflareWorkerName": "contentforge-demo",
+  "d1DatabaseName": "contentforge-demo",
+  "d1DatabaseId": "00000000-0000-0000-0000-000000000000",
+  "r2BucketName": "contentforge-demo-media",
+  "themeName": "botanical-editorial",
+  "brandColors": {
+    "ink": "#111827",
+    "paper": "#f8fafc",
+    "surface": "#ffffff",
+    "accent": "#2563eb",
+    "accentDark": "#1d4ed8",
+    "line": "#e5e7eb"
+  },
+  "navigation": [
+    {
+      "label": "Inspiration",
+      "href": "/category/inspiration"
+    },
+    {
+      "label": "Trip Planning",
+      "href": "/category/trip-planning"
+    },
+    {
+      "label": "Flights & Stays",
+      "href": "/category/flights-stays"
+    },
+    {
+      "label": "Budget Tips",
+      "href": "/category/budget-tips"
+    },
+    {
+      "label": "Packing & Gear",
+      "href": "/category/packing-gear"
+    },
+    {
+      "label": "Travel Styles",
+      "href": "/category/travel-styles"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Inspiration",
+      "slug": "inspiration"
+    },
+    {
+      "name": "Trip Planning",
+      "slug": "trip-planning"
+    },
+    {
+      "name": "Flights & Stays",
+      "slug": "flights-stays"
+    },
+    {
+      "name": "Budget Tips",
+      "slug": "budget-tips"
+    },
+    {
+      "name": "Packing & Gear",
+      "slug": "packing-gear"
+    },
+    {
+      "name": "Travel Styles",
+      "slug": "travel-styles"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Planning",
+      "slug": "planning"
+    },
+    {
+      "name": "How To",
+      "slug": "how-to"
+    },
+    {
+      "name": "Tools",
+      "slug": "tools"
+    },
+    {
+      "name": "Strategy",
+      "slug": "strategy"
+    }
+  ],
+  "homepageModules": [
+    {
+      "key": "lead",
+      "label": "Featured Guide",
+      "enabled": true
+    },
+    {
+      "key": "latest",
+      "label": "Latest Guides",
+      "enabled": true
+    },
+    {
+      "key": "genreGuides",
+      "label": "Start Planning",
+      "enabled": true
+    }
+  ],
+  "defaultAuthor": "Budget Travel Compass Editorial",
+  "rssEnabled": true,
+  "adsEnabled": false,
+  "adsensePublisherId": ""
+}

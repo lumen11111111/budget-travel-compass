@@ -1,0 +1,6 @@
+{
+  "command": "worker deploy",
+  "exitCode": 0,
+  "stdout": "Are you sure you want to deploy? Confirm",
+  "stderr": ""
+}

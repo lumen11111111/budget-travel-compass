@@ -1,0 +1,6 @@
+{
+  "command": "worker deploy",
+  "exitCode": 0,
+  "stdout": "deployment complete for contentforge-it-fixture without identifiers",
+  "stderr": ""
+}

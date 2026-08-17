@@ -1,0 +1,6 @@
+{
+  "command": "r2 bucket create",
+  "exitCode": 0,
+  "stdout": "name: contentforge-it-fixture-media\nid: r2fixture",
+  "stderr": "Warning: telemetry unavailable"
+}

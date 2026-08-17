@@ -1,0 +1,8 @@
+# BTC-016 Claim-to-Source Ledger
+
+| Claim | Consequence / freshness | Source name | URL | Source type | Access / publication date | Scope / limitations |
+|---|---|---|---|---|---|---|
+| Ticketmaster users can check an event's current status in their account. | MEDIUM / current feature | Ticketmaster Help, event status | https://help.ticketmaster.com/hc/en-us/articles/9756148148625-How-do-I-check-if-my-event-has-been-canceled-postponed-rescheduled-or-moved | First-party platform help | Accessed 2026-08-14; publication date not stated; URL PASS | Named-platform example only. |
+| A canceled Ticketmaster event is generally refunded to the original payment method after organizer funds are received, with stated exceptions and different transfer/resale rules. | HIGH / current policy | Ticketmaster Help, canceled events | https://help.ticketmaster.com/hc/en-us/articles/9784845658641-What-happens-if-my-event-is-canceled | First-party platform policy/help | Accessed 2026-08-14; publication date not stated; URL PASS | Paraphrased with qualifications; exact order notice controls. |
+| Google Maps supports planned departure/arrival routing for driving and transit, with estimates based on planned-time traffic or schedules. | MEDIUM / current feature | Google Maps Help, Discover helpful features | https://support.google.com/maps/answer/6291839?hl=en | First-party platform help | Accessed 2026-08-14; publication date not stated; URL PASS | Planning aid only; operator timetable remains authoritative. |
+| Buffers, stay-zone scoring, and the worksheet improve plan robustness. | LOW / editorial | Author synthesis | — | Editorial method | Not applicable | Presented as a planning method, not measured fact. |

@@ -1,0 +1,6 @@
+{
+  "command": "r2 bucket list",
+  "exitCode": 0,
+  "stdout": "",
+  "stderr": ""
+}

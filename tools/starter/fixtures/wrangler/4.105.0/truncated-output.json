@@ -1,0 +1,6 @@
+{
+  "command": "worker deploy",
+  "exitCode": 0,
+  "stdout": "{\"result\":{\"id\":\"abc\" [truncated]",
+  "stderr": ""
+}

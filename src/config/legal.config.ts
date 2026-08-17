@@ -1,0 +1,1 @@
+export { legalConfig } from "@/instance/legal.config";

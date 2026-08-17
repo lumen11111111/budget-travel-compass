@@ -1,0 +1,11 @@
+{
+  "command": "r2 bucket list",
+  "wranglerVersion": "4.105.0",
+  "exitCode": 0,
+  "stdout": "bucket listing complete without stable records",
+  "stderr": "",
+  "expected": {
+    "ok": false,
+    "code": "WRANGLER_R2_LIST_PARSE_FAILED"
+  }
+}

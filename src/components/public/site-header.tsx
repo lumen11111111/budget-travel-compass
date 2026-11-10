@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
 import { Menu, Search, X } from "lucide-react";
 import { useState } from "react";
 import { siteConfig } from "@/config/site.config";
+import { PublicLink as Link } from "@/components/public/public-link";
 import { budgetTravelArtwork } from "@/instance/brand-assets";
 import { siteThemeConfig } from "@/instance/theme.config";
 

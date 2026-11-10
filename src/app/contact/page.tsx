@@ -21,15 +21,12 @@ export default async function ContactPage() {
     <main className="site-shell">
       <SiteHeader />
       <div className="btc-contact-grid">
-        <form className="btc-contact-form" aria-describedby="contact-preview-note">
-          <span className="eyebrow">Contact</span><h1>Get in touch</h1><p>{page.intro}</p>
-          <label>Name<input disabled name="name" /></label>
-          <label>Email<input disabled name="email" type="email" /></label>
-          <label>Subject<input disabled name="subject" /></label>
-          <label>Message<textarea disabled name="message" rows={6} /></label>
-          <button className="button" disabled type="button">Send message</button>
-          <p id="contact-preview-note">This form is not enabled and does not send submissions. Please use the email channel shown here.</p>
-        </form>
+        <section className="btc-contact-intro">
+          <span className="eyebrow">Contact</span>
+          <h1>Get in touch</h1>
+          <p>{page.intro}</p>
+          <p>Email is the only contact channel currently offered on this website.</p>
+        </section>
         <aside className="btc-contact-aside">
           <Image src={budgetTravelArtwork.postcardStamp} alt="" width={420} height={416} aria-hidden="true" />
           <span className="eyebrow">Email</span>

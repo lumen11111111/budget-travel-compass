@@ -42,6 +42,7 @@ export interface ArticleInput {
   isFeatured: boolean;
   isPinned: boolean;
   publishedAt?: string;
+  editorialUpdatedAt?: string;
   seoTitle: string;
   seoDescription: string;
 }
@@ -150,6 +151,7 @@ function normalizeArticleInput(input: ArticleInput): Omit<Article, "id" | "viewC
     isFeatured: input.isFeatured,
     isPinned: status === "published" && input.isPinned,
     publishedAt: normalizedPublishedAt(input),
+    editorialUpdatedAt: input.editorialUpdatedAt?.trim() || undefined,
     seoTitle: input.seoTitle.trim() || undefined,
     seoDescription: input.seoDescription.trim() || undefined,
   };

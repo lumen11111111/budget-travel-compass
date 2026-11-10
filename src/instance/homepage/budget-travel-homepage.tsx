@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { PublicLink as Link } from "@/components/public/public-link";
 import {
   Backpack,
   Compass,
@@ -11,11 +11,9 @@ import {
 import { SiteFooter } from "@/components/public/site-footer";
 import { SiteHeader } from "@/components/public/site-header";
 import { budgetTravelArtwork } from "@/instance/brand-assets";
-import type { SiteIdentitySettings } from "@/lib/site-identity";
 import { journeyStripAssets, type HomepageStory } from "./preview-data";
 
 type BudgetTravelHomepageProps = {
-  identity: SiteIdentitySettings;
   stories: HomepageStory[];
 };
 
@@ -36,7 +34,7 @@ const smartTips = [
   { label: "Experience more", detail: "spend less.", artwork: budgetTravelArtwork.utilityIcons.experience },
 ] as const;
 
-export function BudgetTravelHomepage({ identity, stories }: BudgetTravelHomepageProps) {
+export function BudgetTravelHomepage({ stories }: BudgetTravelHomepageProps) {
   const featured = stories.slice(0, 3);
   const latest = stories.slice(3, 7);
 
@@ -99,7 +97,7 @@ export function BudgetTravelHomepage({ identity, stories }: BudgetTravelHomepage
         </section>
 
         <section className="btc-section" aria-labelledby="btc-featured-title">
-          <SectionHeading id="btc-featured-title" title="Featured journeys" href="/news" linkLabel="View all featured" />
+          <SectionHeading id="btc-featured-title" title="Featured journeys" href="/guides" linkLabel="View all featured" />
           <div className="btc-featured-grid">
             {featured.map((story, index) => (
               <StoryOverlay story={story} key={story.number} featured={index === 0} />
@@ -108,7 +106,7 @@ export function BudgetTravelHomepage({ identity, stories }: BudgetTravelHomepage
         </section>
 
         <section className="btc-section" aria-labelledby="btc-latest-title">
-          <SectionHeading id="btc-latest-title" title="Latest guides" href="/news" linkLabel="View all articles" />
+          <SectionHeading id="btc-latest-title" title="Latest guides" href="/guides" linkLabel="View all articles" />
           <div className="btc-journal-feed">
             {latest.slice(0, 3).map((story, index) => <JournalStory story={story} index={index} key={story.number} />)}
             <TravelNote />
@@ -132,27 +130,6 @@ export function BudgetTravelHomepage({ identity, stories }: BudgetTravelHomepage
         </section>
       </div>
 
-      <section className="btc-newsletter" aria-labelledby="btc-newsletter-title">
-        <Image
-          src="/brand/budget-travel-compass/newsletter-mountain-lake.webp"
-          alt="Traveler looking across a mountain lake"
-          fill
-          sizes="100vw"
-        />
-        <div className="btc-newsletter-overlay" />
-        <div className="btc-newsletter-inner">
-          <div>
-            <h2 id="btc-newsletter-title">More adventures.<br />Better travel.</h2>
-            <p>Get practical travel tips and guides straight to your inbox.</p>
-          </div>
-          <form className="btc-newsletter-form" aria-label="Newsletter preview" onSubmit={undefined}>
-            <label className="visually-hidden" htmlFor="btc-newsletter-email">Email address</label>
-            <input id="btc-newsletter-email" type="email" placeholder="Your email address" disabled />
-            <button type="button" disabled aria-describedby="btc-newsletter-status">Join the journey</button>
-          </form>
-          <p className="visually-hidden" id="btc-newsletter-status">Newsletter signup is coming soon.</p>
-        </div>
-      </section>
       <SiteFooter />
     </main>
   );

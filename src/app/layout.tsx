@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleAnalytics } from "@/components/public/google-analytics";
 import "@/theme/active-theme.css";
 import "@/instance/homepage/homepage.css";
 import "./globals.css";
@@ -42,7 +43,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body style={themeCssVariables()}>{children}</body>
+      <body style={themeCssVariables()}>
+        <GoogleAnalytics measurementId="G-RBMRJRGY8D" />
+        {children}
+      </body>
     </html>
   );
 }

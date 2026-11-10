@@ -5,7 +5,7 @@ import { getCanonicalSiteUrl } from "@/lib/site-url";
 
 export const sitemapStaticPages = [
   "/",
-  "/news",
+  "/guides",
   "/about",
   "/contact",
   "/privacy-policy",
@@ -51,14 +51,14 @@ export function buildSitemapXml(content: SitemapContent, siteUrl = getCanonicalS
 
   for (const path of sitemapStaticPages) {
     add(path, {
-      changefreq: path === "/" || path === "/news" ? "daily" : "monthly",
-      priority: path === "/" ? 1 : path === "/news" ? 0.9 : 0.5,
+      changefreq: path === "/" || path === "/guides" ? "daily" : "monthly",
+      priority: path === "/" ? 1 : path === "/guides" ? 0.9 : 0.5,
     });
   }
 
   for (const article of content.articles) {
-    add(`/news/${article.slug}`, {
-      lastmod: toMetadataDate(article.updatedAt, article.publishedAt),
+    add(`/guides/${article.slug}`, {
+      lastmod: toMetadataDate(article.editorialUpdatedAt),
       changefreq: "weekly",
       priority: 0.8,
     });

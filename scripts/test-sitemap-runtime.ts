@@ -19,8 +19,8 @@ function sampleContent(): SitemapContent {
     runtime: "production",
     reason: "test",
     articles: [
-      { slug: "published-one", publishedAt: "2026-08-01 10:00:00", updatedAt: "2026-08-02 11:00:00" },
-      { slug: "published-two", publishedAt: "2026-08-01", updatedAt: null },
+      { slug: "published-one", publishedAt: "2026-08-01 10:00:00", editorialUpdatedAt: "2026-08-02 11:00:00" },
+      { slug: "published-two", publishedAt: "2026-08-01", editorialUpdatedAt: null },
     ],
     categories: [
       { slug: "guides", updatedAt: "2026-08-01" },
@@ -39,7 +39,7 @@ function testSitemapXml() {
   const xml = buildSitemapXml(sampleContent(), new URL("https://example.test"));
   const urls = Array.from(xml.matchAll(/<loc>([^<]+)<\/loc>/g)).map((match) => match[1]);
   assert(urls.includes("https://example.test/"));
-  assert(urls.includes("https://example.test/news/published-one"));
+  assert(urls.includes("https://example.test/guides/published-one"));
   assert(urls.includes("https://example.test/category/guides"));
   assert(urls.includes("https://example.test/tag/alpha"));
   assert(urls.includes("https://example.test/disclaimer"));
@@ -73,13 +73,13 @@ function testCacheExclusion() {
   assert(CACHE_EXCLUDED_PATHS.has("/robots.txt"));
   assert.equal(isPublicEdgeCacheEligible("/sitemap.xml"), false);
   assert.equal(isPublicEdgeCacheEligible("/robots.txt"), false);
-  assert.equal(isPublicEdgeCacheEligible("/news/example"), true);
+  assert.equal(isPublicEdgeCacheEligible("/guides/example"), true);
 }
 
 function testRepositoryQueryShape() {
   const source = readFileSync("src/db/repositories/content.ts", "utf8");
   assert.match(source, /listSitemapContent/);
-  assert.match(source, /SELECT slug, published_at, updated_at FROM articles WHERE lower\(status\) = 'published'/);
+  assert.match(source, /SELECT slug, published_at, editorial_updated_at FROM articles WHERE lower\(status\) = 'published'/);
   const sitemapFunction = source.slice(source.indexOf("export async function listSitemapContent"), source.indexOf("export async function listAdminTags"));
   assert(!/body_html|summary|cover_url|seo_title|seo_description/i.test(sitemapFunction));
 }

@@ -20,7 +20,7 @@ export function canonicalUrl(path: string) {
 
 
 export function paginatedPath(basePath: string, page: number) {
-  return page <= 1 ? basePath : `${basePath}?page=${page}`;
+  return page <= 1 ? basePath : `${basePath}/page/${page}`;
 }
 
 export function paginationMetadata(basePath: string, currentPage: number, totalPages: number) {
@@ -86,13 +86,13 @@ export async function buildSeoMetadata({ article, description, image, path, titl
 
 export async function buildArticleJsonLd(article: ArticleView) {
   const settings = await getSiteIdentitySettings();
-  const articleUrl = canonicalUrl(`/news/${article.slug}`);
+  const articleUrl = canonicalUrl(`/guides/${article.slug}`);
   const imageUrl = article.coverUrl ? absoluteUrl(article.coverUrl) : undefined;
-  const dateModified = toMetadataDate(article.updatedAt, article.publishedAt);
+  const dateModified = toMetadataDate(article.editorialUpdatedAt);
 
   return {
     "@context": "https://schema.org",
-    "@type": "NewsArticle",
+    "@type": "Article",
     headline: article.title,
     description: article.seoDescription ?? article.summary,
     datePublished: toMetadataDate(article.publishedAt) ?? article.publishedAt,
@@ -141,7 +141,7 @@ export function buildBreadcrumbJsonLd(article: ArticleView) {
         "@type": "ListItem",
         position: 3,
         name: article.title,
-        item: canonicalUrl(`/news/${article.slug}`),
+        item: canonicalUrl(`/guides/${article.slug}`),
       },
     ],
   };

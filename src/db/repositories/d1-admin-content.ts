@@ -19,6 +19,7 @@ type ArticleRow = {
   sort_order: number;
   view_count: number;
   published_at: string | null;
+  editorial_updated_at: string | null;
   created_at: string;
   updated_at: string;
   seo_title: string | null;
@@ -132,6 +133,7 @@ function rowToArticle(row: ArticleRow, tagIds: number[]): Article & { readingTim
     sortOrder: row.sort_order,
     viewCount: row.view_count,
     publishedAt: row.published_at ?? "",
+    editorialUpdatedAt: row.editorial_updated_at ?? undefined,
     updatedAt: row.updated_at,
     seoTitle: row.seo_title ?? undefined,
     seoDescription: row.seo_description ?? undefined,
@@ -155,6 +157,7 @@ function rowToPublicArticle(row: PublicArticleRow, tagIds: number[]): Article & 
     sortOrder: row.sort_order,
     viewCount: row.view_count,
     publishedAt: row.published_at ?? "",
+    editorialUpdatedAt: row.editorial_updated_at ?? undefined,
     updatedAt: row.updated_at,
     seoTitle: row.seo_title ?? undefined,
     seoDescription: row.seo_description ?? undefined,
@@ -244,7 +247,7 @@ export async function createD1Article(db: D1Database, input: ArticleInput) {
   await runD1Query("createD1Article.insertArticle", () =>
     db
       .prepare(
-        "INSERT INTO articles (title, slug, summary, body_html, cover_url, category_id, status, is_featured, is_pinned, sort_order, view_count, published_at, created_at, updated_at, seo_title, seo_description) VALUES (?, ?, ?, ?, ?, (SELECT id FROM categories WHERE slug = ?), ?, ?, ?, ?, 0, ?, ?, ?, ?, ?)",
+        "INSERT INTO articles (title, slug, summary, body_html, cover_url, category_id, status, is_featured, is_pinned, sort_order, view_count, published_at, editorial_updated_at, created_at, updated_at, seo_title, seo_description) VALUES (?, ?, ?, ?, ?, (SELECT id FROM categories WHERE slug = ?), ?, ?, ?, ?, 0, ?, ?, ?, ?, ?, ?)",
       )
       .bind(
         input.title,
@@ -258,6 +261,7 @@ export async function createD1Article(db: D1Database, input: ArticleInput) {
         input.isPinned ? 1 : 0,
         sortOrder,
         publishedAt,
+        input.editorialUpdatedAt || null,
         timestamp,
         timestamp,
         input.seoTitle || null,
@@ -292,7 +296,7 @@ export async function updateD1Article(db: D1Database, id: number, input: Article
   await runD1Query("updateD1Article.updateArticle", () =>
     db
       .prepare(
-        "UPDATE articles SET title = ?, slug = ?, summary = ?, body_html = ?, cover_url = ?, category_id = (SELECT id FROM categories WHERE slug = ?), status = ?, is_featured = ?, is_pinned = ?, published_at = ?, updated_at = ?, seo_title = ?, seo_description = ? WHERE id = ?",
+        "UPDATE articles SET title = ?, slug = ?, summary = ?, body_html = ?, cover_url = ?, category_id = (SELECT id FROM categories WHERE slug = ?), status = ?, is_featured = ?, is_pinned = ?, published_at = ?, editorial_updated_at = ?, updated_at = ?, seo_title = ?, seo_description = ? WHERE id = ?",
       )
       .bind(
         input.title,
@@ -305,6 +309,7 @@ export async function updateD1Article(db: D1Database, id: number, input: Article
         input.isFeatured ? 1 : 0,
         isPinned ? 1 : 0,
         publishedAt,
+        input.editorialUpdatedAt || null,
         timestamp,
         input.seoTitle || null,
         input.seoDescription || null,

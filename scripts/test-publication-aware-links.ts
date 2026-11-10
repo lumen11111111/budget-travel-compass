@@ -23,7 +23,7 @@ async function main() {
 
 function testPublishedTarget() {
   const html = '<p>Read <a href="/news/published-guide">the guide</a>.</p>';
-  assert.match(filterUnpublishedInternalArticleLinks(html, new Set(["published-guide"])), /href="\/news\/published-guide"/);
+  assert.match(filterUnpublishedInternalArticleLinks(html, new Set(["published-guide"])), /href="\/guides\/published-guide"/);
 }
 
 function testDraftTarget() {
@@ -51,7 +51,7 @@ function testExternalAndSourceLinks() {
 function testMixedTargets() {
   const html = '<a href="/news/live-guide">Live</a> and <a href="/news/draft-guide">Draft</a>';
   const output = filterUnpublishedInternalArticleLinks(html, new Set(["live-guide"]));
-  assert.match(output, /href="\/news\/live-guide"/);
+  assert.match(output, /href="\/guides\/live-guide"/);
   assert(!output.includes('href="/news/draft-guide"'));
   assert.match(output, /and Draft$/);
 }
@@ -67,7 +67,7 @@ async function testDuplicateTargetsUseOneBatchLookup() {
   });
   assert.equal(calls, 1);
   assert.deepEqual(received, ["repeated-guide"]);
-  assert.equal((output.match(/href="\/news\/repeated-guide"/g) ?? []).length, 2);
+  assert.equal((output.match(/href="\/guides\/repeated-guide"/g) ?? []).length, 2);
 }
 
 function testNestedMarkup() {
@@ -108,17 +108,17 @@ function testApprovedGraphSimulations() {
   const provisional = filterUnpublishedInternalArticleLinks(html, waveOne);
   const provisionalHrefs = extractInternalArticleSlugs(provisional);
   assert(provisionalHrefs.every((slug) => waveOne.has(slug)));
-  assert.equal((provisional.match(/href="\/news\//g) ?? []).length, edges.filter((slug) => waveOne.has(slug)).length);
+  assert.equal((provisional.match(/href="\/guides\//g) ?? []).length, edges.filter((slug) => waveOne.has(slug)).length);
 
   const allPublished = new Set(edges);
   const allPublishedOutput = filterUnpublishedInternalArticleLinks(html, allPublished);
-  assert.equal((allPublishedOutput.match(/href="\/news\//g) ?? []).length, 129);
-  assert.deepEqual([...allPublishedOutput.matchAll(/href="\/news\/([a-z0-9-]+)"/g)].map((match) => match[1]), edges);
+  assert.equal((allPublishedOutput.match(/href="\/guides\//g) ?? []).length, 129);
+  assert.deepEqual([...allPublishedOutput.matchAll(/href="\/guides\/([a-z0-9-]+)"/g)].map((match) => match[1]), edges);
 }
 
 function testRuntimeIntegrationContract() {
   const articleDetail = readFileSync("src/components/public/article-detail.tsx", "utf8");
-  const publicPage = readFileSync("src/app/news/[slug]/page.tsx", "utf8");
+  const publicPage = readFileSync("src/app/guides/[slug]/page.tsx", "utf8");
   const previewPage = readFileSync("src/app/admin/articles/[id]/preview/page.tsx", "utf8");
   const repository = readFileSync("src/db/repositories/content.ts", "utf8");
   const actions = readFileSync("src/app/admin/articles/actions.ts", "utf8");
@@ -127,7 +127,7 @@ function testRuntimeIntegrationContract() {
   assert(!previewPage.includes("publicationAwareInternalLinks"));
   assert.match(articleDetail, /renderPublicationAwareArticleHtml/);
   assert.match(repository, /SELECT slug FROM articles WHERE slug IN \(\$\{placeholders\}\) AND lower\(status\) = 'published'/);
-  assert.match(actions, /revalidatePath\("\/news\/\[slug\]", "page"\)/);
+  assert.match(actions, /revalidatePath\("\/guides\/\[slug\]", "page"\)/);
 }
 
 main().catch((error) => {

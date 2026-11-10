@@ -2,7 +2,7 @@ import render from "dom-serializer";
 import { parseDocument } from "htmlparser2";
 import type { AnyNode, Element, ParentNode } from "domhandler";
 
-const INTERNAL_ARTICLE_HREF = /^\/news\/([a-z0-9]+(?:-[a-z0-9]+)*)$/;
+const INTERNAL_ARTICLE_HREF = /^\/(?:guides|news)\/([a-z0-9]+(?:-[a-z0-9]+)*)$/;
 
 export type PublishedArticleSlugResolver = (slugs: readonly string[]) => Promise<ReadonlySet<string>>;
 
@@ -25,8 +25,12 @@ export function filterUnpublishedInternalArticleLinks(html: string, publishedSlu
   walk(document.children, (node) => {
     if (!isAnchor(node)) return;
     const slug = internalArticleSlug(node.attribs.href);
-    if (!slug || publishedSlugs.has(slug)) return;
-    unwrapElement(node);
+    if (!slug) return;
+    if (!publishedSlugs.has(slug)) {
+      unwrapElement(node);
+      return;
+    }
+    node.attribs.href = `/guides/${slug}`;
   });
 
   return render(document.children);

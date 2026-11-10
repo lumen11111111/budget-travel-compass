@@ -127,6 +127,11 @@ function toDateInputValue(value?: string) {
   return localDate.toISOString().slice(0, 10);
 }
 
+function toOptionalDateInputValue(value?: string) {
+  if (!value) return "";
+  return value.match(/^\d{4}-\d{2}-\d{2}/)?.[0] ?? "";
+}
+
 async function uploadArticleImage(file: File, kind: "body" | "cover"): Promise<UploadResult> {
   const formData = new FormData();
   formData.set("image", file);
@@ -332,10 +337,17 @@ export function ArticleForm({ action, article, categories, errorMessage, tags }:
         </label>
       </div>
 
-      <label className="field">
-        <span>Publish Date</span>
-        <input name="publishedAt" type="date" defaultValue={toDateInputValue(article?.publishedAt)} />
-      </label>
+      <div className="form-grid two-columns">
+        <label className="field">
+          <span>Publish Date</span>
+          <input name="publishedAt" type="date" defaultValue={toDateInputValue(article?.publishedAt)} />
+        </label>
+        <label className="field">
+          <span>Editorial update date</span>
+          <input name="editorialUpdatedAt" type="date" defaultValue={toOptionalDateInputValue(article?.editorialUpdatedAt)} />
+          <small>Optional. Set only after a substantive editorial review or revision.</small>
+        </label>
+      </div>
 
       <section className="editor-media-panel">
         <label className="field cover-url-field">

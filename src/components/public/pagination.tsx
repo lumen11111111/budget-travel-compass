@@ -1,11 +1,11 @@
-import Link from "next/link";
+import { PublicLink as Link } from "@/components/public/public-link";
 
 export function articleCountLabel(count: number) {
   return `${count} ${count === 1 ? "article" : "articles"}`;
 }
 
 function pageHref(basePath: string, page: number) {
-  return page <= 1 ? basePath : `${basePath}?page=${page}`;
+  return page <= 1 ? basePath : `${basePath}/page/${page}`;
 }
 
 function visiblePages(currentPage: number, totalPages: number) {

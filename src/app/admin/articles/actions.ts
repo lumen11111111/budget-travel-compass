@@ -28,6 +28,7 @@ const articleSchema = z.object({
   isFeatured: z.boolean(),
   isPinned: z.boolean(),
   publishedAt: z.string().optional(),
+  editorialUpdatedAt: z.string().optional(),
   seoTitle: z.string().trim(),
   seoDescription: z.string().trim(),
 });
@@ -90,6 +91,11 @@ function parsePublishDate(value: FormDataEntryValue | null, status: ArticleInput
   return parseDateOnly(raw);
 }
 
+function parseOptionalDate(value: FormDataEntryValue | null): string | null {
+  const raw = String(value ?? "").trim();
+  return raw ? parseDateOnly(raw) : "";
+}
+
 type ArticleFormParseResult =
   | {
       input: ArticleInput;
@@ -116,12 +122,13 @@ function parseArticleForm(formData: FormData, forcedStatus?: ArticleInput["statu
   const status = forcedStatus ?? (formData.get("intent") === "publish" ? "published" : "draft");
   const rawSlug = String(formData.get("slug") || formData.get("title") || "");
   const publishedAt = parsePublishDate(formData.get("publishedAt"), status);
+  const editorialUpdatedAt = parseOptionalDate(formData.get("editorialUpdatedAt"));
   const submittedBodyHtml = String(formData.get("bodyHtml") || formData.get("body") || "");
   const originalBodyHtml = String(formData.get("originalBodyHtml") || "");
   const bodyHtml = shouldPreserveOriginalBodyHtml(status, submittedBodyHtml, originalBodyHtml)
     ? preserveImportedArticleHtml(submittedBodyHtml, originalBodyHtml)
     : sanitizeArticleHtml(submittedBodyHtml);
-  if (publishedAt === null) {
+  if (publishedAt === null || editorialUpdatedAt === null) {
     return {
       error: "date-invalid",
       success: false,
@@ -140,6 +147,7 @@ function parseArticleForm(formData: FormData, forcedStatus?: ArticleInput["statu
     isFeatured: formData.get("isFeatured") === "on",
     isPinned: status === "published" && formData.get("isPinned") === "on",
     publishedAt,
+    editorialUpdatedAt,
     seoTitle: formData.get("seoTitle") ?? "",
     seoDescription: formData.get("seoDescription") ?? "",
   });
@@ -174,8 +182,8 @@ async function isSlugUsed(slug: string, currentId?: number) {
 
 function revalidateContent() {
   revalidatePath("/");
-  revalidatePath("/news");
-  revalidatePath("/news/[slug]", "page");
+  revalidatePath("/guides");
+  revalidatePath("/guides/[slug]", "page");
   revalidatePath("/admin");
   revalidatePath("/admin/articles");
 }

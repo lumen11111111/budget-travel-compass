@@ -38,6 +38,7 @@ export interface Article {
   sortOrder?: number;
   viewCount: number;
   publishedAt: string;
+  editorialUpdatedAt?: string;
   updatedAt?: string;
   seoTitle?: string;
   seoDescription?: string;

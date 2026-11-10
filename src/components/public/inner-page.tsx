@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { PublicLink as Link } from "@/components/public/public-link";
 import { budgetTravelArtwork } from "@/instance/brand-assets";
 
 export function InnerPageHero({
@@ -35,10 +35,10 @@ export function GuidesEmptyState({ search = false }: { search?: boolean }) {
   return (
     <section className="btc-guides-empty">
       <Image src={budgetTravelArtwork.travelNoteSeal} alt="" width={417} height={420} aria-hidden="true" />
-      <span className="eyebrow">{search ? "No results" : "Coming soon"}</span>
-      <h2>{search ? "No guides found for this route." : "Guides for this route are on the way."}</h2>
-      <p>{search ? "Try another search or explore one of our travel topics." : "Explore another travel topic while we prepare this section."}</p>
-      <Link className="button" href="/news">Explore travel guides</Link>
+      <span className="eyebrow">{search ? "No results" : "No guides here"}</span>
+      <h2>{search ? "No guides found for this route." : "No published guides match this route."}</h2>
+      <p>{search ? "Try another search or explore one of our travel topics." : "Explore another travel topic or browse every published guide."}</p>
+      <Link className="button" href="/guides">Explore travel guides</Link>
     </section>
   );
 }

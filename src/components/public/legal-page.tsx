@@ -1,6 +1,6 @@
 import { SiteFooter } from "@/components/public/site-footer";
 import { SiteHeader } from "@/components/public/site-header";
-import Link from "next/link";
+import { PublicLink as Link } from "@/components/public/public-link";
 
 export interface LegalSection {
   title: string;
@@ -18,13 +18,15 @@ function renderInlineText(text: string) {
   const pattern = /(https?:\/\/[^\s]+|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,})/g;
   const parts = text.split(pattern);
 
-  return parts.map((part) => {
+  return parts.map((part, index) => {
     if (/^https?:\/\//.test(part)) {
-      return <a href={part} key={part} rel="noreferrer" target="_blank">{part}</a>;
+      const href = part.replace(/[.,;:!?]+$/, "");
+      const punctuation = part.slice(href.length);
+      return <span key={`${part}-${index}`}><a href={href} rel="noopener noreferrer" target="_blank">{href}</a>{punctuation}</span>;
     }
 
     if (/^[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}$/.test(part)) {
-      return <a href={`mailto:${part}`} key={part}>{part}</a>;
+      return <a href={`mailto:${part}`} key={`${part}-${index}`}>{part}</a>;
     }
 
     return part;

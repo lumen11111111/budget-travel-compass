@@ -1,7 +1,7 @@
-import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { siteConfig } from "@/config/site.config";
+import { PublicLink as Link } from "@/components/public/public-link";
 import { listCategories } from "@/db/repositories/content";
 import { getSiteIdentitySettings } from "@/db/repositories/site-settings";
 import { budgetTravelArtwork } from "@/instance/brand-assets";

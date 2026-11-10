@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
 import { ArticleList } from "@/components/public/article-list";
+import { PublicLink as Link } from "@/components/public/public-link";
 import { SiteFooter } from "@/components/public/site-footer";
 import { SearchPanel, SiteHeader } from "@/components/public/site-header";
 import { listPublishedArticleSlugs, type ArticleView } from "@/db/repositories/content";
@@ -9,6 +9,7 @@ import { formatReadingTime } from "@/lib/reading-time";
 import { listArticleHeadings, normalizeArticleBodyHtml } from "@/lib/article-body";
 import { renderPublicationAwareArticleHtml } from "@/lib/publication-aware-links";
 import { buildArticleJsonLd, buildBreadcrumbJsonLd } from "@/lib/seo";
+import { articleSourcesBySlug } from "@/content/article-sources.generated";
 
 interface ArticleDetailProps {
   article: ArticleView;
@@ -32,6 +33,7 @@ export async function ArticleDetail({
     ? await renderPublicationAwareArticleHtml(normalizedArticleBodyHtml, listPublishedArticleSlugs)
     : normalizedArticleBodyHtml;
   const articleHeadings = listArticleHeadings(articleBodyHtml);
+  const sources = articleSourcesBySlug[article.slug] ?? [];
   const articleJsonLd = structuredData ? await buildArticleJsonLd(article) : null;
   const breadcrumbJsonLd = structuredData ? buildBreadcrumbJsonLd(article) : null;
 
@@ -106,6 +108,19 @@ export async function ArticleDetail({
               </aside>
             ) : null}
           </div>
+          {sources.length > 0 ? (
+            <section className="article-sources" aria-labelledby="article-sources-title">
+              <h2 id="article-sources-title">Sources</h2>
+              <p>Reference material used to research and verify this guide.</p>
+              <ul>
+                {sources.map((source) => (
+                  <li key={source.url}>
+                    <a href={source.url} rel="noopener noreferrer" target="_blank">{source.title}</a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
         </article>
 
         {related.length > 0 ? (

@@ -1,6 +1,6 @@
 import { createInterface } from "node:readline/promises";
 import { stdin as input, stdout as output } from "node:process";
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
 
 import { projectRoot, readJsoncFile, runCommand, truncate, type CommandResult } from "./cli-utils";
@@ -44,7 +44,9 @@ async function main() {
   warn("Remote write", "This command writes migrations and seed data to remote D1 by default.");
 
   await confirmRemoteWrite(database.database_name, options);
-  await applySqlFile(database.database_name, "src/db/migrations/0001_initial.sql", "Apply migration");
+  for (const migration of listMigrationFiles()) {
+    await applySqlFile(database.database_name, migration, `Apply migration ${path.basename(migration)}`);
+  }
   await runSeedWriter();
   await applySqlFile(database.database_name, "data/d1-seed.sql", "Apply seed SQL");
   await verifyTables(database.database_name);
@@ -52,6 +54,19 @@ async function main() {
 
   console.log("");
   pass("D1 initialization complete", "Remote D1 is ready for production article publishing.");
+}
+
+function listMigrationFiles() {
+  const relativeDirectory = path.join("src", "db", "migrations");
+  const directory = path.join(projectRoot, relativeDirectory);
+  if (!existsSync(directory)) fail("Migrations", `Missing migrations directory: ${relativeDirectory}`);
+
+  const migrations = readdirSync(directory)
+    .filter((name) => /^\d+.*\.sql$/.test(name))
+    .sort()
+    .map((name) => path.join(relativeDirectory, name).replaceAll("\\", "/"));
+  if (migrations.length === 0) fail("Migrations", `No SQL migrations found in ${relativeDirectory}.`);
+  return migrations;
 }
 
 function parseArgs(args: string[]): Options {

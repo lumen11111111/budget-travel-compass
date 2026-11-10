@@ -112,6 +112,7 @@ const viewportList = [
 ];
 const publicStaticRoutes = [
   "/",
+  "/guides",
   "/news",
   "/search",
   "/about",
@@ -756,7 +757,7 @@ function discoverRoutes(projectMode: ProjectMode) {
 }
 
 function isOptionalDynamicRoute(route: string) {
-  return route.startsWith("/category/") || route.startsWith("/news/") || route.startsWith("/tag/");
+  return route.startsWith("/category/") || route.startsWith("/guides/") || route.startsWith("/tag/");
 }
 
 async function startLocalServer(): Promise<ServerHandle> {

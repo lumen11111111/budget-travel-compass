@@ -108,9 +108,12 @@ export const legalConfig = {
           ],
         },
         {
-          title: "Services Not Currently Enabled",
+          title: "Analytics and Advertising",
           body: [
-            "Google Analytics, GA4, Google advertising, AdSense, newsletter submissions, and affiliate tracking are not enabled on the public website in this baseline configuration.",
+            "Budget Travel Compass uses Google Analytics 4 on public pages to understand site usage and performance. Google Analytics may process device, browser, approximate location, interaction, and technical information and may store analytics cookies.",
+            "Advertising is not currently enabled. If Google AdSense is enabled later, Google and other third-party vendors or ad networks may use cookies based on a visitor's prior visits to this or other websites. They may also use web beacons, IP addresses, and device identifiers to serve, secure, personalize, and measure advertising.",
+            "Visitors can manage personalized advertising through Google's Ads Settings at https://adssettings.google.com and review Google's privacy information at https://policies.google.com/privacy. When other advertising vendors are used, this policy will identify them or link to applicable vendor controls.",
+            "Where required for visitors in the European Economic Area, United Kingdom, or Switzerland, advertising storage and personalized advertising will not be enabled until consent is obtained through an applicable Google-certified consent management platform that supports the IAB Europe Transparency and Consent Framework. No such advertising consent platform is claimed to be active while advertising remains disabled.",
           ],
         },
         {
@@ -195,7 +198,7 @@ export const legalConfig = {
         {
           title: "Public Website",
           body: [
-            "The public website does not currently use non-essential analytics, advertising, or personalization cookies. Google Analytics and advertising services are not enabled.",
+            "The public website loads Google Analytics 4 by default to measure audience and performance. GA4 may set analytics cookies such as _ga. Advertising and ad-personalization services are not currently enabled.",
           ],
         },
         {
@@ -211,9 +214,17 @@ export const legalConfig = {
           ],
         },
         {
+          title: "Advertising Cookies",
+          body: [
+            "Advertising cookies are not currently enabled. If advertising is introduced, third-party vendors including Google may use cookies based on prior visits to this or other websites, together with web beacons, IP addresses, and device identifiers, to serve and measure ads. This policy and the Privacy Policy will be updated to identify applicable vendors and controls.",
+            "For applicable visitors in the European Economic Area, United Kingdom, or Switzerland, consent for advertising will be requested through a Google-certified consent management platform that supports the IAB Europe Transparency and Consent Framework before relevant advertising storage is enabled.",
+          ],
+        },
+        {
           title: "Browser Controls and Future Changes",
           body: [
-            "Browsers provide controls for viewing, limiting, or deleting stored data. This policy will be updated before optional analytics, advertising, or similar services are enabled.",
+            "Browsers provide controls for viewing, limiting, blocking, or deleting cookies and other stored data. Blocking analytics cookies may limit measurement but should not prevent access to public editorial content.",
+            "Browser controls are separate from a consent management platform and do not replace consent where applicable law requires it. This policy will be updated before advertising or similar services are enabled.",
           ],
         },
       ],
@@ -265,7 +276,8 @@ export const legalConfig = {
         {
           title: "Tools",
           body: [
-            "Editorial work may involve research, drafting, editing, organization, or formatting tools. Regardless of tooling, published material should be reviewed for clarity, relevance, and support. We do not characterize all content as entirely human-written or entirely machine-generated.",
+            "Editorial work may use AI-assisted or other software tools for research support, drafting, editing, organization, formatting, or image generation. A tool output is not treated as evidence by itself; factual claims should be checked against appropriate sources and the published material should receive editorial review for clarity, relevance, and support.",
+            "Generated or illustrative imagery is not presented as documentary proof of a place, event, product, or first-hand experience. Tooling must not be used to invent personal travel experience, testing, interviews, credentials, expert review, or access that did not occur.",
           ],
         },
       ],

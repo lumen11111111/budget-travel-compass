@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { PublicLink as Link } from "@/components/public/public-link";
 import { homepageConfig } from "@/config/homepage.config";
 import { listEditorPicks, listTags } from "@/db/repositories/content";
 import { getSiteIdentitySettings } from "@/db/repositories/site-settings";
@@ -31,7 +31,7 @@ export async function Sidebar() {
             <li key={article.id}>
               <span className="rank">{index + 1}</span>
               <div>
-                <Link href={`/news/${article.slug}`}>{article.title}</Link>
+                <Link href={`/guides/${article.slug}`}>{article.title}</Link>
                 <span>{identity.defaultAuthor}</span>
               </div>
             </li>

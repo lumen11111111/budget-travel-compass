@@ -21,7 +21,6 @@ export const siteThemeDefinition: ThemeDefinition = {
     "not-found-layouts",
     "header-shell",
     "footer-accordion",
-    "newsletter",
     "empty-states",
     "responsive-layouts",
     "theme-preview"

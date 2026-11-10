@@ -1,7 +1,7 @@
 import { siteConfig } from "@/config/site.config";
 
 export const seoConfig = {
-  news: {
+  guides: {
     title: "Travel Guides",
     description:
       "Browse practical guides for affordable independent travel, including trip planning, flights, stays, budgeting, packing, and travel styles.",

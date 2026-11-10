@@ -396,8 +396,7 @@
 }
 
 .btc-featured-card img,
-.btc-journal-image img,
-.btc-newsletter img {
+.btc-journal-image img {
   object-fit: cover;
   transition: transform 520ms ease, filter 300ms ease;
 }
@@ -664,81 +663,6 @@
 .btc-smart-tip strong { font-size: 15px; font-weight: 600; letter-spacing: 0; line-height: 1.24; min-height: 18.6px; }
 .btc-smart-tip span { color: rgba(255, 255, 255, .76); font-size: 12px; font-weight: 400; line-height: 1.4; margin-top: 4px; }
 
-.btc-newsletter {
-  min-height: 330px;
-  overflow: hidden;
-  position: relative;
-}
-
-.btc-newsletter-overlay {
-  background: linear-gradient(90deg, rgba(5, 24, 33, 0.92) 0%, rgba(5, 24, 33, 0.62) 53%, rgba(5, 24, 33, 0.42) 100%);
-  inset: 0;
-  position: absolute;
-}
-
-.btc-newsletter-inner {
-  align-items: center;
-  color: #fff;
-  display: grid;
-  gap: 64px;
-  grid-template-columns: minmax(280px, 0.72fr) minmax(420px, 1fr);
-  margin: 0 auto;
-  max-width: 1320px;
-  min-height: 330px;
-  padding: 50px clamp(28px, 5vw, 72px);
-  position: relative;
-  z-index: 1;
-}
-
-.btc-newsletter h2 {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.3rem, 4vw, 4.5rem);
-  letter-spacing: -0.04em;
-  line-height: 0.97;
-  margin: 0 0 17px;
-}
-
-.btc-newsletter p {
-  font-size: 0.96rem;
-  line-height: 1.55;
-  margin: 0;
-  max-width: 390px;
-}
-
-.btc-newsletter-form {
-  display: grid;
-  grid-template-columns: minmax(220px, 1fr) auto;
-  max-width: 680px;
-}
-
-.btc-newsletter-form input,
-.btc-newsletter-form button {
-  border: 0;
-  border-radius: 4px;
-  min-height: 54px;
-  padding: 0 20px;
-}
-
-.btc-newsletter-form input {
-  background: rgba(255, 255, 255, 0.97);
-  color: var(--btc-ink);
-}
-
-.btc-newsletter-form button {
-  background: var(--btc-orange);
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 900;
-  letter-spacing: 0.035em;
-  min-width: 190px;
-  text-transform: uppercase;
-}
-
-.btc-newsletter-form :disabled {
-  cursor: not-allowed;
-  opacity: 1;
-}
-
 .btc-site-footer {
   background: var(--btc-navy, #0b2533);
   color: #fff;
@@ -886,7 +810,6 @@
   .btc-smart-strip { grid-template-columns: 1fr; }
   .btc-smart-heading { border-bottom: 1px solid rgba(255,255,255,.14); border-right: 0; padding: 8px 8px 18px; }
   .btc-smart-tips { padding-top: 12px; }
-  .btc-newsletter-inner { gap: 34px; grid-template-columns: minmax(240px, .7fr) minmax(360px, 1fr); }
   .btc-footer-grid { grid-template-columns: minmax(220px, 1.2fr) repeat(2, minmax(130px, .6fr)); }
   .btc-footer-legal-links { grid-column: 2 / 4; }
 }
@@ -990,13 +913,6 @@
   .btc-smart-artwork { height: 38px; width: 38px; }
   .btc-smart-tip:nth-child(even) { border-right: 0; }
   .btc-smart-tip:last-child { border-bottom: 0; grid-column: 1 / 3; }
-
-  .btc-newsletter { min-height: 410px; }
-  .btc-newsletter-inner { align-content: center; display: grid; gap: 24px; grid-template-columns: 1fr; min-height: 410px; padding: 38px 22px; }
-  .btc-newsletter h2 { font-size: clamp(2.15rem, 10.5vw, 3rem); margin-bottom: 20px; }
-  .btc-newsletter p { font-size: .88rem; }
-  .btc-newsletter-form { grid-template-columns: 1fr; gap: 8px; }
-  .btc-newsletter-form button { min-width: 0; }
 
   .btc-site-footer { padding: 36px 22px 18px; }
   .btc-footer-grid { gap: 16px; grid-template-columns: 1fr; }

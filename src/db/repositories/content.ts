@@ -25,6 +25,7 @@ import {
   listLocalTagsSync,
 } from "@/db/repositories/local-admin-content";
 import { decideContentRuntime, type ContentRuntimeDecision } from "@/lib/content-runtime";
+import { ARTICLE_PAGE_SIZE } from "@/lib/pagination";
 import { publishedArticleWhere } from "@/lib/published";
 import { getReadingTimeMinutes } from "@/lib/reading-time";
 
@@ -32,7 +33,7 @@ export type SitemapContent = {
   articles: Array<{
     slug: string;
     publishedAt: string | null;
-    updatedAt: string | null;
+    editorialUpdatedAt: string | null;
   }>;
   categories: Array<{
     slug: string;
@@ -59,7 +60,7 @@ export interface AdminArticleFilters {
   category?: string;
 }
 
-export const ARTICLE_PAGE_SIZE = 10;
+export { ARTICLE_PAGE_SIZE };
 
 export interface PaginatedArticles {
   currentPage: number;
@@ -235,8 +236,8 @@ export async function listSitemapContent(): Promise<SitemapContent> {
   if (db) {
     const [articleResult, categoryResult, tagResult] = await Promise.all([
       db
-        .prepare("SELECT slug, published_at, updated_at FROM articles WHERE lower(status) = 'published' ORDER BY published_at DESC")
-        .all<{ slug: string; published_at: string | null; updated_at: string | null }>(),
+        .prepare("SELECT slug, published_at, editorial_updated_at FROM articles WHERE lower(status) = 'published' ORDER BY published_at DESC")
+        .all<{ slug: string; published_at: string | null; editorial_updated_at: string | null }>(),
       db
         .prepare("SELECT slug, updated_at FROM categories WHERE enabled = 1 ORDER BY sort_order ASC, name ASC")
         .all<{ slug: string; updated_at: string | null }>(),
@@ -248,7 +249,7 @@ export async function listSitemapContent(): Promise<SitemapContent> {
       articles: articleResult.results.map((row) => ({
         slug: row.slug,
         publishedAt: row.published_at,
-        updatedAt: row.updated_at,
+        editorialUpdatedAt: row.editorial_updated_at,
       })),
       categories: categoryResult.results.map((row) => ({
         slug: row.slug,
@@ -268,7 +269,7 @@ export async function listSitemapContent(): Promise<SitemapContent> {
     articles: newestPublishedArticles(snapshot).map((article) => ({
       slug: article.slug,
       publishedAt: article.publishedAt || null,
-      updatedAt: article.updatedAt || null,
+      editorialUpdatedAt: article.editorialUpdatedAt || null,
     })),
     categories: snapshot.categories
       .filter((category) => category.enabled)

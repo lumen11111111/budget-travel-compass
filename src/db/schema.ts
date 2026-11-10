@@ -65,6 +65,7 @@ export const articles = sqliteTable("articles", {
   sortOrder: integer("sort_order").notNull().default(0),
   viewCount: integer("view_count").notNull().default(0),
   publishedAt: text("published_at"),
+  editorialUpdatedAt: text("editorial_updated_at"),
   createdAt: text("created_at").notNull(),
   updatedAt: text("updated_at").notNull(),
   seoTitle: text("seo_title"),

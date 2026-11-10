@@ -25,7 +25,9 @@ data/*dry-run*.json
 /content-import/
 /content/import/
 /.codex-preview/
+/.codex-backups/
 /artifacts/
 /a.status
 /.tmp-import-verify-*
+/.tmp/static-public/
 NUL

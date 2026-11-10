@@ -12,6 +12,7 @@ export const PUBLIC_ARTICLE_LIST_SQL = `
     sort_order,
     view_count,
     published_at,
+    editorial_updated_at,
     updated_at,
     seo_title,
     seo_description,

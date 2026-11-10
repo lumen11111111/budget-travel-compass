@@ -123,7 +123,7 @@ export function buildHomepageStories(published: ArticleView[]): HomepageStory[] 
       readTime: `${article.readingTimeMinutes} min read`,
       image: article.coverUrl || preview.image,
       alt: article.title,
-      href: `/news/${article.slug}`,
+      href: `/guides/${article.slug}`,
       source: "published",
     };
   });

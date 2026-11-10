@@ -21,6 +21,9 @@ function sourceFiles(directory: string): string[] {
 const wrangler = JSON.parse(read("wrangler.jsonc")) as {
   assets?: { html_handling?: string; not_found_handling?: string; run_worker_first?: unknown };
 };
+const packageJson = JSON.parse(read("package.json")) as { scripts?: Record<string, string> };
+assert.equal(packageJson.scripts?.deploy, "npm run deploy:static-public");
+assert.match(packageJson.scripts?.["deploy:static-public"] ?? "", /static-public:prepare/);
 assert.equal(wrangler.assets?.html_handling, "drop-trailing-slash");
 assert.equal(wrangler.assets?.not_found_handling, "404-page");
 assert.deepEqual(wrangler.assets?.run_worker_first, ["/admin", "/admin/*", "/media/*"]);

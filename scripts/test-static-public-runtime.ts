@@ -68,7 +68,7 @@ for (const route of assetManifest.htmlRoutes) {
   assert.doesNotMatch(html, /127\.0\.0\.1:8799|template preview|lorem ipsum/i, `${route} contains build residue`);
 }
 
-for (const required of ["404.html", "ads.txt", "robots.txt", "search-index.json", "sitemap.xml", "_headers", "_redirects"]) {
+for (const required of ["404.html", "ads.txt", "robots.txt", "search-index.json", "sitemap.xml", "icon.png", "apple-icon.png", "_headers", "_redirects"]) {
   assert.ok(existsSync(path.join(assets, required)), `${required} is missing from Static Assets`);
 }
 assert.match(readFileSync(path.join(assets, "_headers"), "utf8"), new RegExp(snapshotManifest.contentDigest));

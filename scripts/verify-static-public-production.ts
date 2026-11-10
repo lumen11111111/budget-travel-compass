@@ -33,6 +33,8 @@ async function main() {
     { url: `${ORIGIN}/search?q=budget`, status: 200, static: true },
     { url: `${ORIGIN}/search-index.json`, status: 200, static: true },
     { url: `${ORIGIN}/ads.txt`, status: 200, static: true },
+    { url: `${ORIGIN}/icon.png?static-public-check=1`, status: 200, static: true },
+    { url: `${ORIGIN}/apple-icon.png?static-public-check=1`, status: 200, static: true },
     { url: `${ORIGIN}/__static-public-verification-missing__`, status: 404, static: true },
     { url: `${ORIGIN}/news`, status: 308, static: true },
     { url: `${ORIGIN}/admin/login`, status: 200, static: false },

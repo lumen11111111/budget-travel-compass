@@ -169,6 +169,8 @@ async function capturePublicAssets(manifest: StaticPublicSnapshotManifest) {
   writeFileSync(path.join(ASSET_DIR, "search-index.json"), `${JSON.stringify(searchIndex)}\n`, "utf8");
   writeFileSync(path.join(ASSET_DIR, "sitemap.xml"), sitemapResponse.body, "utf8");
   writeFileSync(path.join(ASSET_DIR, "robots.txt"), (await fetchText("/robots.txt")).body, "utf8");
+  writeFileSync(path.join(ASSET_DIR, "icon.png"), readFileSync(path.join(ROOT, "src", "app", "icon.png")));
+  writeFileSync(path.join(ASSET_DIR, "apple-icon.png"), readFileSync(path.join(ROOT, "src", "app", "apple-icon.png")));
 
   const notFound = await fetchText("/__static-public-missing__", 404);
   if (!notFound.contentType.includes("text/html")) throw new Error("Generated 404 response is not HTML.");
@@ -190,7 +192,7 @@ async function capturePublicAssets(manifest: StaticPublicSnapshotManifest) {
     publishedArticleCount: manifest.publishedArticleCount,
     sitemapRouteCount: sitemapRoutes.length,
     htmlRouteCount: htmlRoutes.size,
-    generatedAssetCount: generatedAssets.length + 6,
+    generatedAssetCount: generatedAssets.length + 8,
     htmlRoutes: [...htmlRoutes].sort(),
     generatedAssets: generatedAssets.sort(),
   };
